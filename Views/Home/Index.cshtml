@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/home.css" />
+
+<header>
+    <nav id="navbar" class="navbar shadow navbar-expand-sm font-jost navbar-toggleable-sm navbar-dark bg-transparent fixed-top mb-3">
+        <div class="container">
+            <!-- <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">BlogIt</a> -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse justify-content-center collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav justify-content-center flex-grow-1">
+                    <li class="nav-item me-5">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item me-5">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Blogs</a>
+                    </li>
+                    <li class="nav-item me-5">
+                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item me-5">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">About</a>
+                    </li>
+                    <li class="nav-item me-5">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Team</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="bg-dark position-relative min-vh-100">
+    <div class="position-absolute bg-home top-0 end-0 bottom-0 start-0"></div>
+    <div class="start-50 position-absolute text-center top-50" style="transform: translate(-50%, -50%);">
+        <!-- <img src="./temp_images/1.png" /> -->
+        <div class="mt-3 pt-3 font-jost text-light">
+            <h3>Want a read that interests you?</h3>
+            <h4 class="text-orange"><code class="text-orange">Blog it.</code></h4>
+            <div class="d-flex p-1 align-items-center">
+                <input type="search" value="nature" class="form-control input-control mt-4" />
+                <i class="material-icons mt-4 mx-0">search</i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bg-light font-jost py-5">
+    <div class="my-5 pb-5">
+        <h3 class="text-center">FIND A BLOG RELATED TO ANY TOPIC</h3>
+    </div>
+    <div class="d-flex category-slider justify-content-evenly">
+        <span>PLANTS</span>
+        <span>FOOD</span>
+        <span>WORLD</span>
+        <span>SOCCER</span>
+    </div>
+    <div class="d-flex category-slider mt-5 justify-content-evenly">
+        <span>CODING</span>
+        <span>TRAVEL</span>
+        <span>COSMOS</span>
+        <span>ENGINEERING</span>
+        <span>MEDICINES</span>
+    </div>
+    <div class="my-5 pt-5 text-center">
+        <button class="btn btn-orange btn-lg br-50 px-4">Find More</button>
+    </div>
+</div>
+<div class="bg-seperator-10 create-blog position-relative font-jost py-5">
+    <div class="create-blog-bg"></div>
+    <div>
+        <div class="my-5">
+            <h3 class="text-center text-light">OR...WHY NOT CREATE ONE YOURSELF?</h3>
+        </div>
+        <div class="text-center">
+            <h3 class="text-secondary">IT'S ABSOLUTELY FREE!</h3>
+        </div>
+        <div class="timeline container d-flex justify-content-evenly mt-5 pt-5">
+            <div class="bulb bg-light br-50p d-flex align-content-center p-2 d-inline">
+                <i class="material-icons text-black">article</i>
+                <span class="bulb-text text-center">Pick a template</span>
+            </div>
+            <div class="bulb bg-light br-50p d-flex align-content-center p-2 d-inline">
+                <i class="material-icons text-black">edit</i>
+                <span class="bulb-text">Edit</span>
+            </div>
+            <div class="bulb bg-light br-50p d-flex align-content-center p-2 d-inline">
+                <i class="material-icons text-black">bookmark</i>
+                <span class="bulb-text">Draft</span>
+            </div>
+            <div class="bulb bg-light br-50p d-flex align-content-center p-2 d-inline">
+                <i class="material-icons text-black">verified</i>
+                <span class="bulb-text">Finalize</span>
+            </div>
+            <div class="bulb-last bg-light br-50p d-flex align-content-center p-2 d-inline">
+                <i class="material-icons text-black">public</i>
+                <span class="bulb-text">Publish</span>
+            </div>
+        </div>
+        <div class="my-5 pt-5 text-center">
+            <button onclick="window.location.href='/user/register'" style="z-index: 2;" class="btn btn-light btn-lg br-50 px-4">Create My First Blog</button>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white my-5 font-jost py-5">
+    <h3 class="my-5 text-center">WHAT WE OFFER</h3>
+    <div class="d-flex justify-content-evenly">
+        <div style="min-height: 25vh;" class="shadow px-4 pt-5 pb-3 col-3 br-10 border">
+            <i class="material-icons text-orange" style="font-size: 75px;">&#xe745;</i>
+            <h3 class="my-3">Create A Blog</h3>
+            <p class="text-secondary">
+                Have a great knowledge of something that you want others to know about? Why not create a blog! With tons of options to choose from, Blogit gives you an upper hand over creating your blog the way you like.
+            </p>
+            <button onclick="window.location.href='/user/register'" class="my-3 btn btn-orange text-white br-50 float-end px-4">Create My Blog</button>
+        </div>
+        <div style="min-height: 25vh;" class="shadow px-4 pt-5 pb-3 col-3 br-10 border">
+            <i class="material-icons text-orange" style="font-size: 75px;">&#xe2db;</i>
+            <h3 class="my-3">Search For A Blog</h3>
+            <p class="text-secondary">
+                Do you find some topic really interesting? Know what others have to say about the same by just the click of a button. Search for a blog and read it. With variety of catergories and tons of blogs for each category, you'll never get bored.
+            </p>
+            <button class="my-3 btn btn-orange text-white br-50 float-end px-4">Search A Blog</button>
+        </div>
+        <div style="min-height: 25vh;" class="shadow px-4 pt-5 pb-3 col-3 br-10 border">
+            <i class="material-icons text-orange" style="font-size: 75px;">&#xe52d;</i>
+            <h3 class="my-3">Save To Drafts</h3>
+            <p class="text-secondary">
+                Creating a blog ain't that easy right. Having to write too much of course, needs a break. But wait! Do I have to start all over it again? Absolutely not! With Blogit, you can save your current blog without publishing it.
+            </p>
+            <button class="my-3 btn btn-orange text-white br-50 float-end px-4">Check This Out</button>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light-2 font-jost mt-5 py-5">
+    <div class="text-center">
+        <h3 class="mt-5">JOIN THE COMMUNITY TODAY</h3>
+        <p class="mt-4 text-secondary pb-0">With thousands of satisfied users, make sure you don't miss out joining our amazing community. <b>It's absolutely free!</b> By joining us, you'll be able to:</p>
+        <ul class="text-secondary join-us-list pt-1 mx-auto text-start p-3" style="width: fit-content;">
+            <li class="my-2">Access thousands of blogs on our website</li>
+            <li class="my-2">Create unlimited number of blogs</li>
+            <li class="my-2">Save articles to access them easily</li>
+            <li class="my-2">Like, comment and appreciate on other's blogs</li>
+        </ul>
+        <button onclick="window.location.href='/user/register'" class="my-3 btn btn-orange text-white br-50 px-4">Create My Account</button>
+    </div>
+</div>
+
+<footer class="bg-dark font-jost text-light pt-5 pb-3">
+    <div class="d-flex mb-5 justify-content-around align-items-center">
+        <img src="~/images/logo-dark.png" width="200" />
+        <div class="text-center">
+            <h5 class="text-center">ABOUT</h5>
+            <ul class="text-secondary" style="list-style-type: none;">
+                <li>FAQs</li>
+                <li>Create Account</li>
+                <li>Login</li>
+                <li>Create A Blog</li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <h5 class="text-center">HELP</h5>
+            <ul class="text-secondary" style="list-style-type: none;">
+                <li>Create A Blog</li>
+                <li>Find A Blog</li>
+                <li>How blog filters work?</li>
+                <li>Contact Us</li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <h5 class="text-center">CONTACTS</h5>
+            <ul class="text-secondary" style="list-style-type: none;">
+                <a class="text-secondary text-decoration-none" href="mailto:naikshrey2308@gmail.com">
+                <li>naikshrey2308@gmail.com</li></a>
+                <a class="text-secondary text-decoration-none" href="mailto:shruti29032003@gmail.com">
+                <li>shruti29032003@gmail.com</li></a>
+            </ul>
+        </div>
+    </div>
+    <hr style="color: black;" />
+    <div class="text-center text-light py-3">
+        &copy; Copyright Blogit 2022-23
+    </div>
+</footer>
+
+<script>
+        let navbar = document.getElementById("navbar");
+        window.addEventListener("scroll", () => {
+            if(window.scrollY > 20) {
+                navbar.classList.replace("navbar-dark", "navbar-light");
+                navbar.classList.replace("bg-transparent", "bg-light");
+            } else {
+                navbar.classList.replace("navbar-light", "navbar-dark");
+                navbar.classList.replace("bg-light", "bg-transparent");
+            }
+        });
+</script>

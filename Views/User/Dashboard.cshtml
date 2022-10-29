@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model BlogIt.Models.User
+
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    User user = ViewBag.User;
+}
+
+<link rel="stylesheet" href="~/css/blog.css" />
+
+@section Navbar {
+    
+}
+
+<div class="row font-jost gx-0">
+    <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
+        <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
+            <div class="text-center text-light mx-seperator-90-auto">
+                <img src="@user.ProfilePicUrl" class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <p class="fs-5 mt-3">@user.Name</p>
+            </div>
+            <div class="mt-0 text-secondary">
+                <div onclick="window.location.href='/user/dashboard'" class="sidebar-action active-action">
+                    <i class="material-icons pe-3">dashboard</i>
+                    Explore
+                </div>
+                <div onclick="window.location.href='/blog/create'" class="sidebar-action">
+                    <i class="material-icons pe-3">&#xe147;</i>
+                    Create Blog
+                </div>
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">&#xe2bf;</i>
+                    Saved Blogs
+                </div>
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">bookmark</i>
+                    My Blogs
+                </div>
+            </div>
+            <div class="text-secondary">
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">&#xe853;</i>
+                    Edit Profile
+                </div>
+                <div onclick="window.location.href='/user/logout'" class="sidebar-action">
+                    <i class="material-icons pe-3">logout</i>
+                    Log Out
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
+    <div style="height: 200vh;" class="col-9"></div>
+</div>

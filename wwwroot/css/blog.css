@@ -1,0 +1,94 @@
+@import url("base.css");
+
+.sidebar-action {
+    padding: 10px 20px;
+    margin-right: 60px;
+    margin-left: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-action:hover, .sidebar-action.active-action {
+    background-color: #ffffff22;
+    color: white;
+}
+
+.editor-floating-panel {
+    position: fixed;
+    bottom: 15px;
+    left: 62.5%;
+    transform: translate(-62.5%, 0%);
+    width: fit-content;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.editor-floating-panel > button {
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+}
+
+.editor-floating-panel > button > i {
+    font-size: 20px;
+}
+
+.editor-floating-panel > button:hover {
+    background-color: #00000022;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.main-content {
+    outline: none;
+    padding-left: 30px;
+    padding-right: 30px;
+    line-height: 1.3;
+    max-width: 100%;
+}
+
+.main-content > * {
+    word-wrap: break-word;
+    max-width: 100%;
+    word-break: break-all;
+    white-space: normal !important;
+}
+
+.blog-heading {
+    outline: none;
+}
+
+.block-inserter > button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: white;
+    border: none;
+    width: 100%;
+}
+
+.block-inserter > button:hover {
+    background-color: #ffffff22;
+    cursor: pointer;
+}
+
+.block-inserter > button > i {
+    font-size: 18px;
+    padding-right: 10px;
+}
+
+.blog-image-upload {
+    position: absolute;
+    border: none;
+    color: white;
+    background-color: #00000088;
+    font-size: 24px;
+    padding: 5px 10px;
+    border-radius: 50px;
+    top: 225px;
+    right: 90px;
+    cursor: pointer;
+}

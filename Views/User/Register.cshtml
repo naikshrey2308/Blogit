@@ -1,0 +1,69 @@
+@model BlogIt.Models.User
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="bg-seperator-left min-vh-100">
+    <div style="transform: translate(-75%, -50%); top: 50%;" class="position-absolute w-form top-50 start-75 container">
+        <form enctype="multipart/form-data" asp-action="Register" method="POST" class="form p-3 br-10 p-lg-5 container bg-light">
+            <div style="flex-direction: row; cursor: pointer;" class="mb-3 d-flex align-items-center text-secondary">
+                <div class="d-flex" onclick="window.location.href='/User/Login'">
+                    <i class="material-icons mx-3">&#xe5c4;</i>
+                    LOGIN
+                </div>
+                <div class="w-100">&nbsp;</div>
+                <div class="d-flex" onclick="document.getElementById('img-uploader').click()">
+                    <div>UPLOAD</div>
+                    <i class="material-icons mx-2">image</i>
+                </div>
+            </div>
+            <img id="img-display" src="~/images/logo-light.png" width="250" class="img-uploader d-block border border-2 br-50p mx-auto" />
+            <div class="mt-3">
+                <!-- <p class="mb-1">Email</p> -->
+                <input id="img-uploader" name="profilePic" onchange="changeDisplay()" accept="image/*" type="file" class="d-none form-control" />
+            </div>
+            <p id="err-holder" style="font-size: 14px;" class="px-5 my-2 text-danger"></p>
+            <div class="mt-3">
+                <!-- <p class="mb-1">Email</p> -->
+                <input type="email" asp-for="Email" class="form-control" title="Please enter a valid email (for example, johndoe@gmail.com)." placeholder="Email" required />
+            </div>
+            <div class="mt-3">
+                <!-- <p class="mb-1">Email</p> -->
+                <input type="text" asp-for="Name" class="form-control" pattern="^[a-zA-Z ]+$" title="Name only contain alphabets and white spaces." placeholder="Name" required />
+            </div>
+            <div class="mt-3">
+                <!-- <p class="mb-1">Password</p> -->
+                <input type="password" asp-for="Password" class="form-control" placeholder="Password" required />
+            </div>
+            <div class="mt-3">
+                <!-- <p class="mb-1">Password</p> -->
+                <input type="password" name="cpass" class="form-control" placeholder="Confirm Password" required />
+            </div>
+            <div class="mt-5 text-end w-75 mx-auto">
+                <button type="submit" class="btn btn-orange px-4 br-50">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function changeDisplay() {
+        let display = document.getElementById("img-display");
+        let image = document.getElementById("img-uploader").files[0];
+        image = URL.createObjectURL(image);
+        display.src = image;
+    }
+
+    window.onload = function () {
+        if (document.URL.includes("err=pass")) {
+            let errHolder = document.getElementById("err-holder");
+            errHolder.textContent = "The passwords do not match.";
+        }
+        else if (document.URL.includes("err=missing")) {
+            let errHolder = document.getElementById("err-holder");
+            errHolder.textContent = "None of the fields should be left empty.";
+        }
+    }
+</script>

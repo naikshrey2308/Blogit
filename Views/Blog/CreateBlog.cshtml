@@ -1,0 +1,212 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+    User User = ViewBag.User;
+}
+
+@model BlogIt.Models.Blog
+
+<link rel="stylesheet" href="~/css/blog.css" />
+
+@section navbar {
+
+}
+
+<div class="row font-jost gx-0">
+    <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
+        <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
+            <div class="text-center text-light mx-seperator-90-auto">
+                <img src="@User.ProfilePicUrl" class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <p class="fs-5 mt-3">@User.Name</p>
+            </div>
+            <div class="mt-0 text-secondary">
+                <div onclick="window.location.href='/user/dashboard'" class="sidebar-action">
+                    <i class="material-icons pe-3">dashboard</i>
+                    Explore
+                </div>
+                <div onclick="window.location.href='/blog/create'" class="sidebar-action active-action">
+                    <i class="material-icons pe-3">&#xe147;</i>
+                    Create Blog
+                </div>
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">&#xe2bf;</i>
+                    Saved Blogs
+                </div>
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">bookmark</i>
+                    My Blogs
+                </div>
+            </div>
+            <div class="text-secondary">
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">&#xe853;</i>
+                    Edit Profile
+                </div>
+                <div onclick="window.location.href='/user/logout'" class="sidebar-action">
+                    <i class="material-icons pe-3">logout</i>
+                    Log Out
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
+    
+    <div class="p-5 col-9">
+        <div class="blog-image pt-4">
+            <h2 class="fw-bold my-5 text-center">
+                &nbsp;
+                <span id="blog-heading" contenteditable="true" class="blog-heading">
+                    Blog Heading Here...
+
+                </span>
+            </h2>
+            <div class="blog-image">
+                <img id="blog-image" src="~/images/create-blog-bg.jpg" class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
+                <button onclick="setBlogImage()" class="text-light d-flex align-items-center blog-image-upload">
+                    <span style="font-size: 18px;">Upload Blog Image</span>
+                    <i class="material-icons ps-2">upload</i>
+                </button>
+            </div>
+            <img src="@User.ProfilePicUrl" class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1;" />
+
+            <div class="modal fade" id="image-selector-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" id="image-selector-modal-closer" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-dark mb-3">Only images with a <strong>.png</strong> extension are allowed.</p>
+                            <iframe id="image-selector" src="/blog/uploadImage" width="100%" height="125px"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="d-none" id="image-selector-modal-trigger" data-bs-toggle="modal" data-bs-target="#image-selector-modal"></button>
+
+            <h6 class="text-center text-secondary">
+                Written By @User.Name
+            </h6>
+
+            <div id="blog-content" contenteditable="true" class="main-content text-start text-dark pt-5">
+                Type '/' for inserting blocks...
+            </div>
+
+            <div id="block-insert-select" contenteditable="false" class="d-none position-absolute py-1 br-10 d-inline-block text-light px-2 bg-dark">
+                <ul class="p-2 block-inserter" style="list-style-type: none;">
+                    <button id="header-insert" onclick="insertHeader()" class="p-2">
+                        <i class="material-icons">title</i>
+                        Title
+                    </button>
+                    <button id="image-insert" onclick="insertImage()" class="p-2">
+                        <i class="material-icons">image</i>
+                        Image
+                    </button>
+                    <button class="p-2" onclick="insertCode()">
+                        <i class="material-icons">&#xe86f;</i>
+                        Code
+                    </button>
+                    <button class="p-2" onclick="insertBList()">
+                        <i class="material-icons">&#xe241;</i>
+                        Bulleted List
+                    </button>
+                    <button class="p-2" onclick="insertNList()">
+                        <i class="material-icons">&#xe400;</i>
+                        Numbered List
+                    </button>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex bg-light px-3 py-1 align-items-center justify-content-evenly border border-2 editor-floating-panel">
+        <button onclick="formatText('bold')" id="bold" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe238;</i>
+        </button>
+        <button onclick="formatText('italic')" id="italic" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe23f;</i>
+        </button>
+        <button onclick="formatText('underline')" id="underline" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe249;</i>
+        </button>
+        <button onclick="formatText('strikeThrough')" id="strikeThrough" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe257;</i>
+        </button>
+        <button onclick="formatText('hiliteColor')" id="highlight" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe3ae;</i>
+        </button>
+        <div class="d-flex p-1 px-3 text-secondary align-items-center">
+            |
+        </div>
+        <button onclick="formatText('justifyLeft')" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe236;</i>
+        </button>
+        <button onclick="formatText('justifyCenter')" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe234;</i>
+        </button>
+        <button onclick="formatText('justifyRight')" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe237;</i>
+        </button>
+        <button onclick="formatText('justifyFull')" class="d-flex p-1 align-items-center">
+            <i class="material-icons">&#xe235;</i>
+        </button>
+        <div class="d-flex p-1 px-3 text-secondary align-items-center">
+            |
+        </div>
+        <button onclick="finalize()" class="d-flex p-1 align-items-center">
+            <i class="material-icons text-orange">check</i>
+        </button>
+    </div>
+
+    <form id="form" class="position-absolute visually-hidden" asp-action="Create" method="POST" enctype="multipart/form-data">
+        <input type="number" asp-for="Author" value="@User.Id" />
+        <input type="text" asp-for="Title" id="blog-heading-submit" />
+        <input type="file" id="blog-image-top" name="blogImage" />
+        <textarea id="blog-content-submit" asp-for="Content"></textarea>
+        <input type="text" asp-for="DateTime" id="blog-date-time" />
+        <input type="number" asp-for="Published" value="0" />
+        <input id="trash-images" type="text" name="trashImages" />
+        <input type="submit" id="form-submitter" />
+    </form>
+</div>
+
+<!-- <footer class="bg-dark font-jost text-light pt-5 pb-3">
+    <div class="d-flex mb-5 justify-content-around align-items-center">
+        <img src="./temp_images/1.png" width="200" />
+        <div class="text-center">
+            <h5 class="text-center">ABOUT</h5>
+            <ul class="text-secondary" style="list-style-type: none;">
+                <li>FAQs</li>
+                <li>Create Account</li>
+                <li>Login</li>
+                <li>Create A Blog</li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <h5 class="text-center">HELP</h5>
+            <ul class="text-secondary" style="list-style-type: none;">
+                <li>Create A Blog</li>
+                <li>Find A Blog</li>
+                <li>How blog filters work?</li>
+                <li>Contact Us</li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <h5 class="text-center">CONTACTS</h5>
+            <ul class="text-secondary" style="list-style-type: none;">
+                <a class="text-secondary text-decoration-none" href="mailto:naikshrey2308@gmail.com"><li>naikshrey2308@gmail.com</li></a>
+                <a class="text-secondary text-decoration-none" href="mailto:shruti29032003@gmail.com"><li>shruti29032003@gmail.com</li></a>
+            </ul>
+        </div>
+    </div>
+    <hr style="color: black;" />
+    <div class="text-center text-light py-3">
+        &copy; Copyright Blogit 2022-23
+    </div>
+</footer> -->
+
+<script src="~/js/blog.js"></script>

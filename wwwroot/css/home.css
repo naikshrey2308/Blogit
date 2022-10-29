@@ -1,0 +1,62 @@
+@import url("base.css");
+
+.category-slider > span {
+    color: lightgrey;
+    /* font-weight: 900; */
+    font-size: 40px;
+    opacity: 1;
+}
+
+.category-slider > span:hover {
+    color: var(--secondary);
+    /* font-weight: 900; */
+    font-size: 40px;
+    cursor: pointer;
+    /* opacity: 0.5; */
+}
+
+.bulb, .bulb-last {
+    position: relative;
+    border: 2px solid var(--secondary);
+}
+
+.bulb-text {
+    position: absolute;
+    color: white;
+    /* content: 'Search'; */
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.bulb::after {
+    position: absolute;
+    background-color: lightgrey;
+    content: '';
+    top: 50%;
+    left: 100%;
+    width: calc(20vw - 100px);
+    height: 2px;
+    transform: translate(0%, -50%);
+}
+
+.join-us-list > li {
+    list-style-type: none;
+}
+
+.join-us-list > li::before {
+    content: 'check';
+    padding-right: 5px;
+    font-size: large;
+    vertical-align: middle;
+    color: limegreen;
+    font-family: "Material Icons";
+}
+
+.bg-home {
+    background-image: url("../images/home-page-bg.jpg");
+    background-repeat: repeat-y;
+    background-size: 100% 100%;
+    z-index: 0;
+    opacity: 0.2;
+}

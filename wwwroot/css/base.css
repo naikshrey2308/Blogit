@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+
+:root {
+    --primary: var(--bs-dark);
+    --secondary: #ff914d;
+}
+
+.bg-seperator {
+    background: linear-gradient(90deg, var(--primary) 50%, var(--secondary) 50%) !important;
+}
+
+.bg-seperator-left {
+    background: linear-gradient(270deg, var(--secondary) 75%, var(--primary) 75%) !important;
+}
+
+.bg-seperator-right {
+    background: linear-gradient(90deg, var(--primary) 75%, var(--secondary) 25%) !important;
+}
+
+.br-10 {
+    border-radius: 10px;
+}
+
+.br-50 {
+    border-radius: 50px;
+}
+
+.br-50p {
+    border-radius: 50%;
+}
+
+.w-form {
+    width: clamp(300px, 40%, 800px);
+}
+
+.btn-orange {
+    background-color: var(--secondary);
+}
+
+.btn:active, .btn:focus {
+    box-shadow: none;
+}
+
+.top-25 {
+    top: 25%;
+}
+
+.start-25 {
+    left: 25%;
+}
+
+.top-75 {
+    top: 75%;
+}
+
+.start-75 {
+    left: 75%;
+}
+
+.form-control {
+    width: clamp(200px, 75%, 600px);
+    display: block;
+    margin: auto;
+}
+
+.form-control:active, .form-control:focus {
+    box-shadow: none;
+}
+
+::selection {
+    background: var(--secondary);
+}
+
+::-moz-selection {
+    background: var(--secondary);
+}
+
+.bg-orange {
+    background-color: #ff914d;
+}
+
+.font-jost {
+    font-family: "Jost";
+}
+
+.text-orange {
+    color: var(--secondary);
+}
+
+.bg-seperator-90 {
+    background: linear-gradient(90deg, var(--primary) 90%, var(--secondary) 10%) !important;
+}
+
+.bg-seperator-95 {
+    background: linear-gradient(90deg, var(--primary) 95%, var(--secondary) 5%) !important;
+}
+
+.bg-seperator-10 {
+    background: linear-gradient(90deg, var(--secondary) 10%, var(--primary) 10%) !important;
+}
+
+.bg-seperator-slash {
+    position: relative;
+    background: linear-gradient(120deg, var(--primary) 25%, var(--secondary) 25%, var(--secondary) 75%, var(--primary) 75%) !important;
+}
+
+.border-orange {
+    border-color: var(--secondary) !important;
+}
+
+.bg-light-2 {
+    background-color: #eeeeee;
+}
+
+.btn-orange:hover {
+    background-color: #ff664d;
+}
+
+.nav-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 0px 20px;
+}
+
+.nav-item:hover {
+    background-color: #ffffff22;
+}
+
+.navbar {
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+.nav-item:hover::before, .nav-item.active::before {
+    position: absolute;
+    height: 10px;
+    width: 2px;
+    top: 0%;
+    left: 50%;
+    content: '';
+    background-color: var(--secondary);
+    transform: translate(-50%, -50%);
+}
+
+.nav-item:hover::after, .nav-item.active::after {
+    position: absolute;
+    height: 10px;
+    width: 2px;
+    bottom: 0%;
+    left: 50%;
+    content: '';
+    background-color: var(--secondary);
+    transform: translate(-50%, 50%);
+}
+
+.mx-seperator-90-auto {
+    margin: 0px auto;
+    transform: translateX(-5%);
+}
