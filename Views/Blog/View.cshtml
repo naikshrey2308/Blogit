@@ -54,11 +54,20 @@
 
     <div class="p-5 col-9">
         <div class="blog-image pt-4">
-            <h2 class="fw-bold my-5 text-center">
-                @blog.Title
-            </h2>
+            <div class="row">
+                <div class="col-10">
+                    <h2 class="fw-bold my-5 text-center">
+                        @blog.Title
+                    </h2>
+                </div>
+                <div class="col-2">
+                    <i class="material-icon" style="font-size:5;" onclick="likeClicked()">favorite</i> &nbsp;
+                    <i class="material-icon" style="font-size:5;" onclick="commentClicked()"></i>
+                </div>
+            </div>
+            
             <div class="blog-image">
-                <img id="blog-image" src="@blog.TitleImageUrl" class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
+                <img id="blog-image" src=@Url.Content(@blog.TitleImageUrl) class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
             </div>
             <img class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1;" />
 
@@ -79,5 +88,15 @@
         return doc.documentElement.textContent;
     }
     document.getElementById("blog-content").innerHTML = "" + htmlDecode(`@blog.Content`);
+
+    function likeClicked(){
+        const req = await fetch('/blog/likeBlog?id' + @blog.Id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+    }
 </script>
 

@@ -64,6 +64,7 @@ namespace BlogIt.Controllers
         [HttpPost]
         public IActionResult Create(Blog blog, string trashImages, IFormFile blogImage) {
             blog.Author = _userRepo.GetUser(HttpContext.Session.GetInt32("user_id") ?? -1);
+            blog.views = 0;
             blog.Published = false;
             /*blog.DateTime = (string)DateTime.Now;*/
 
@@ -112,6 +113,8 @@ namespace BlogIt.Controllers
             Blog blog = _blogRepo.GetBlog(Id);
             if (blog != null)
             {
+                blog.views = blog.views + 1;
+                _blogRepo.Update(blog);
                 User user = new User
                 {
                     Id = HttpContext.Session.GetInt32("user_id") ?? -1,
@@ -121,6 +124,7 @@ namespace BlogIt.Controllers
                 };
                 ViewBag.user = user;
                 ViewBag.blog = blog;
+
                 return View(viewName: "~/Views/Blog/View.cshtml");
             }
             else

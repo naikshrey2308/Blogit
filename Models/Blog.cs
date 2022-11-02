@@ -31,6 +31,8 @@ namespace BlogIt.Models
         [ForeignKey("CategoryId")]
         public Category category { get; set; }
 
+        public int views { get; set; }
+
         public ICollection<UserBlog> SavedBlogs { get; set; }
 
         /*public IList<SavedBlog> SavedBlogs { get; set; }*/

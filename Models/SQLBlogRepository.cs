@@ -44,6 +44,11 @@ namespace BlogIt.Models
             return context.Blogs.FirstOrDefault(b => b.Id == Id);
         }
 
+        Blog IBlogRepository.Update(Blog blog)
+        {
+            context.Blogs.Update(blog);
+            return blog;
+        }
         
     }
 }

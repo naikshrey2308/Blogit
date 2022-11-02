@@ -12,5 +12,7 @@ namespace BlogIt.Models
         IEnumerable<Blog> GetAllBlogs();
         Blog Delete(int Id);
 
+        Blog Update(Blog blog);
+
     }
 }
