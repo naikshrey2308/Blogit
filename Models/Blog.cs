@@ -27,5 +27,12 @@ namespace BlogIt.Models
         public string Content { get; set; }
 
         public bool Published { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category category { get; set; }
+
+        public ICollection<UserBlog> SavedBlogs { get; set; }
+
+        /*public IList<SavedBlog> SavedBlogs { get; set; }*/
     }
 }

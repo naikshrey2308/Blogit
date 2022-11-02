@@ -30,6 +30,9 @@ namespace BlogIt.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -52,7 +55,25 @@ namespace BlogIt.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("BlogIt.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BlogIt.Models.User", b =>
@@ -85,11 +106,45 @@ namespace BlogIt.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BlogIt.Models.UserBlog", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "BlogId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("UserBlogs");
+                });
+
             modelBuilder.Entity("BlogIt.Models.Blog", b =>
                 {
                     b.HasOne("BlogIt.Models.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogIt.Models.Category", "category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("BlogIt.Models.UserBlog", b =>
+                {
+                    b.HasOne("BlogIt.Models.Blog", "Blog")
+                        .WithMany("SavedBlogs")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogIt.Models.User", "User")
+                        .WithMany("SavedBlogs")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -47,10 +47,10 @@ namespace BlogIt.Controllers
             /* Good to go, user logged in */
             HttpContext.Session.SetString("user_email", user.Email);
             HttpContext.Session.SetString("user_name", user.Name);
-            HttpContext.Session.SetString("user_pic", user.ProfilePicUrl);
+            HttpContext.Session.SetString("user_pic", user.ProfilePicUrl!=null?user.ProfilePicUrl:"shruti2903@gmail.com.png");
             HttpContext.Session.SetInt32("user_id", user.Id);
 
-            return Redirect("/User/Dashboard");
+            return Redirect("/blog/explore");
         }
 
         [HttpGet]
@@ -83,7 +83,7 @@ namespace BlogIt.Controllers
                 }
                 else
                 {
-                    user.ProfilePicUrl = null;
+                    user.ProfilePicUrl = "~/assets/images/users/default.png";
                 }
                  
                 User newUser = _userRepo.Add(user);
@@ -99,19 +99,7 @@ namespace BlogIt.Controllers
             return Redirect("~/Views/User/Register.cshtml");
         }
 
-        /*[Authorize]*/
-        public IActionResult Dashboard() {
-            User user = new Models.User();
-            user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
-            user.Email = HttpContext.Session.GetString("user_email") ?? "";
-            user.Name = HttpContext.Session.GetString("user_name") ?? "";
-            user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
-
-            ViewBag.User = user;
-
-            return View(viewName: "~/Views/User/Dashboard.cshtml");
-        }
-
+     
         public IActionResult Logout() {
             HttpContext.Session.Clear();
             return Redirect("/user/login");

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogIt.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221026190845_blog1")]
-    partial class blog1
+    [Migration("20221102140027_ss")]
+    partial class ss
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace BlogIt.Migrations
 
                     b.Property<int?>("AuthorId")
                         .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -54,7 +57,25 @@ namespace BlogIt.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("BlogIt.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BlogIt.Models.User", b =>
@@ -90,10 +111,14 @@ namespace BlogIt.Migrations
             modelBuilder.Entity("BlogIt.Models.Blog", b =>
                 {
                     b.HasOne("BlogIt.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("SavedBlogs")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("BlogIt.Models.Category", "category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }

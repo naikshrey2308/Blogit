@@ -11,5 +11,6 @@ namespace BlogIt.Models
         Blog Add(Blog blog);
         IEnumerable<Blog> GetAllBlogs();
         Blog Delete(int Id);
+
     }
 }

@@ -29,6 +29,8 @@ namespace BlogIt
             services.AddControllersWithViews();
             services.AddScoped<IUserRepository, SQLUserRepository>();
             services.AddScoped<IBlogRepository, SQLBlogRepository>();
+            _ = services.AddScoped<SQLCategoryRepository>();
+            /*services.AddScoped<SQLSavedBlogRepository>();*/
             services.AddSession();
         }
 

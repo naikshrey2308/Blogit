@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\College Documents\\Semester 5\\WAD\\Blog Website\\BlogIt\\BlogIt.csproj": {}
+    "S:\\WAD\\BlogWebsite\\BlogIt.csproj": {}
   },
   "projects": {
-    "D:\\College Documents\\Semester 5\\WAD\\Blog Website\\BlogIt\\BlogIt.csproj": {
+    "S:\\WAD\\BlogWebsite\\BlogIt.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\College Documents\\Semester 5\\WAD\\Blog Website\\BlogIt\\BlogIt.csproj",
+        "projectUniqueName": "S:\\WAD\\BlogWebsite\\BlogIt.csproj",
         "projectName": "BlogIt",
-        "projectPath": "D:\\College Documents\\Semester 5\\WAD\\Blog Website\\BlogIt\\BlogIt.csproj",
-        "packagesPath": "C:\\Users\\devsa\\.nuget\\packages\\",
-        "outputPath": "D:\\College Documents\\Semester 5\\WAD\\Blog Website\\BlogIt\\obj\\",
+        "projectPath": "S:\\WAD\\BlogWebsite\\BlogIt.csproj",
+        "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
+        "outputPath": "S:\\WAD\\BlogWebsite\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\devsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -73,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.409\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.305\\RuntimeIdentifierGraph.json"
         }
       }
     }

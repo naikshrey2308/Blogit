@@ -21,5 +21,7 @@ namespace BlogIt.Models
         public String Password { get; set; }
 
         public String ProfilePicUrl { get; set; }
+
+        public ICollection<UserBlog> SavedBlogs { get; set; }
     }
 }

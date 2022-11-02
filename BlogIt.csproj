@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\images\blogs\" />
-    <Folder Include="wwwroot\assets\images\users\" />
   </ItemGroup>
   
 </Project>

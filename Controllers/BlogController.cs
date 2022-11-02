@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace BlogIt.Controllers
 {
@@ -14,12 +15,15 @@ namespace BlogIt.Controllers
     {
         private readonly IBlogRepository _blogRepo;
         private readonly IUserRepository _userRepo;
+        private readonly SQLCategoryRepository _categoryRepo;
+       /* private readonly SQLSavedBlogRepository _savedBlogRepo;*/
         private readonly IWebHostEnvironment _hostEnvironment;
 
-        public BlogController(IUserRepository userRepo, IBlogRepository blogRepo, IWebHostEnvironment hostEnvironment)
+        public BlogController(IUserRepository userRepo, IBlogRepository blogRepo,SQLCategoryRepository catRepo, IWebHostEnvironment hostEnvironment)
         {
             _blogRepo = blogRepo;
             _userRepo = userRepo;
+            _categoryRepo = catRepo;
             _hostEnvironment = hostEnvironment;
         }
 
@@ -61,15 +65,24 @@ namespace BlogIt.Controllers
         public IActionResult Create(Blog blog, string trashImages, IFormFile blogImage) {
             blog.Author = _userRepo.GetUser(HttpContext.Session.GetInt32("user_id") ?? -1);
             blog.Published = false;
+            /*blog.DateTime = (string)DateTime.Now;*/
 
             string wwwRootPath = _hostEnvironment.WebRootPath;
 
-            var trashImagesArr = trashImages.Split(" ");
-            for (int i = 0; i < trashImagesArr.Length; i++) {
-                string path = wwwRootPath + $"/assets/images/blogs/{trashImagesArr[i]}.png";
-                System.GC.Collect();
-                System.GC.WaitForPendingFinalizers();
-                System.IO.File.Delete(path);
+            if (trashImages == null)
+            {
+
+            }
+            else
+            {
+                var trashImagesArr = trashImages.Split(" ");
+                for (int i = 0; i < trashImagesArr.Length; i++)
+                {
+                    string path = wwwRootPath + $"/assets/images/blogs/{trashImagesArr[i]}.png";
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                }
             }
 
             if (blog.Title != null && blog.Content != null && blog.Author != null && blog.DateTime != null)
@@ -88,7 +101,7 @@ namespace BlogIt.Controllers
                 }
 
                 Blog newBlog = _blogRepo.Add(blog);
-                return Redirect("/user/dashboard");
+                return Redirect("/blog/explore");
             }
 
             return Redirect("/");
@@ -113,5 +126,105 @@ namespace BlogIt.Controllers
             else
                 return Redirect("/");
         }
+
+        [HttpGet]
+        public IActionResult Explore()
+        {
+            User user = new User();
+            user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
+            user.Email = HttpContext.Session.GetString("user_email") ?? "";
+            user.Name = HttpContext.Session.GetString("user_name") ?? "";
+            user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
+            ViewBag.User = user;
+
+            IEnumerable<Category> categories = _categoryRepo.GetAllCategory();
+            ViewBag.category = categories;
+
+
+            var blogs = _blogRepo.GetAllBlogs();
+           /* var users = _userRepo.GetAllUsers();
+            var result = from blog in blogs
+                         join author in users
+                         on blog.Author.Id equals author.Id
+                         select new
+                         {
+                             id = blog.Id,
+                             profile = author.ProfilePicUrl ?? "shruti29@gmail.com.jpg",
+                             name = author.Name,
+                             title = blog.Title,
+                             content = blog.Content
+                         };
+            foreach (var i in result)
+            {
+                Console.WriteLine($"\"{i.name}\" {blogs.ToList()[0].Author.Name} is owned by {i.title}");
+            }*/
+
+            ViewBag.blogs = blogs;
+            return View(viewName: "~/Views/Blog/Explore.cshtml");
+
+        }
+
+        [HttpGet]
+        public IActionResult FilterClicked(string category,string nameTitle)
+        {
+            User user = new User();
+            user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
+            user.Email = HttpContext.Session.GetString("user_email") ?? "";
+            user.Name = HttpContext.Session.GetString("user_name") ?? "";
+            user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
+            ViewBag.User = user;
+
+            IEnumerable<Category> categories = _categoryRepo.GetAllCategory();
+            ViewBag.category = categories;
+
+
+            var blogs = _blogRepo.GetAllBlogs();
+
+            Regex regex = new Regex(@"^"+nameTitle, RegexOptions.IgnoreCase);
+
+            /*Console.WriteLine("hello regex{0}", regex.ToString());*/
+
+            int categ = int.Parse(category);
+
+            var blogsForTesting = blogs;
+
+            if(categ != 0)
+            {
+                blogsForTesting = from blog in blogs
+                                  where blog.category.Id == categ
+                                  select blog;
+            }
+
+            if (nameTitle != null)
+            {
+
+                var result = from blog in blogsForTesting
+                             where ((regex.IsMatch(blog.Author.Name)) || regex.IsMatch(blog.Title))
+                             select blog;
+
+                foreach (var a in result)
+                {
+                    Console.WriteLine(a.Title);
+                }
+
+                ViewBag.blogs = result;
+            }
+
+            else
+            {
+                ViewBag.blogs = blogsForTesting;
+            }
+
+            return View(viewName: "~/Views/Blog/Explore.cshtml");
+        }
+
+        // [HttpGet]
+        // public IActionResult SaveBlog(string id)
+        // {
+        //     Blog blog = _blogRepo.GetBlog(int.Parse(id));
+        //     User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+        //     _savedBlogRepo.Add(user, blog);
+        //     return Json(blog);
+        // }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,12 +33,17 @@ namespace BlogIt.Models
 
         IEnumerable<Blog> IBlogRepository.GetAllBlogs()
         {
-            return context.Blogs;
+            /*Console.WriteLine(context.Blogs);
+            Console.ReadLine();*/
+            // context.Blogs.Include(b => b.Author);
+            return context.Blogs.Include(b => b.Author);
         }
 
         Blog IBlogRepository.GetBlog(int Id)
         {
             return context.Blogs.FirstOrDefault(b => b.Id == Id);
         }
+
+        
     }
 }
