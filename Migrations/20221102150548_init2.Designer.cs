@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogIt.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221102142021_sss")]
-    partial class sss
+    [Migration("20221102150548_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,7 +147,7 @@ namespace BlogIt.Migrations
                     b.HasOne("BlogIt.Models.User", "User")
                         .WithMany("SavedBlogs")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

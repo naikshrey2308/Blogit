@@ -16,7 +16,7 @@ namespace BlogIt.Controllers
         private readonly IBlogRepository _blogRepo;
         private readonly IUserRepository _userRepo;
         private readonly SQLCategoryRepository _categoryRepo;
-       /* private readonly SQLSavedBlogRepository _savedBlogRepo;*/
+        private readonly SQLUserBlogRepository _savedBlogRepo;
         private readonly IWebHostEnvironment _hostEnvironment;
 
         public BlogController(IUserRepository userRepo, IBlogRepository blogRepo,SQLCategoryRepository catRepo, IWebHostEnvironment hostEnvironment)
@@ -218,13 +218,18 @@ namespace BlogIt.Controllers
             return View(viewName: "~/Views/Blog/Explore.cshtml");
         }
 
-        // [HttpGet]
-        // public IActionResult SaveBlog(string id)
-        // {
-        //     Blog blog = _blogRepo.GetBlog(int.Parse(id));
-        //     User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
-        //     _savedBlogRepo.Add(user, blog);
-        //     return Json(blog);
-        // }
+        [HttpGet]
+        public IActionResult SaveBlog(string id)
+        {
+            Blog blog = _blogRepo.GetBlog(int.Parse(id));
+            User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+            UserBlog saveBlog = new UserBlog();
+            saveBlog.UserId = user.Id;
+            saveBlog.User = user;
+            saveBlog.BlogId = blog.Id;
+            saveBlog.Blog = blog;
+            _savedBlogRepo.Add(saveBlog);
+            return Json(blog);
+        }
     }
 }

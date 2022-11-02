@@ -128,3 +128,4 @@ S:\WAD\BlogWebsite\obj\Debug\netcoreapp3.1\BlogIt.dll
 S:\WAD\BlogWebsite\obj\Debug\netcoreapp3.1\BlogIt.pdb
 S:\WAD\BlogWebsite\obj\Debug\netcoreapp3.1\BlogIt.genruntimeconfig.cache
 S:\WAD\BlogWebsite\obj\Debug\netcoreapp3.1\Razor\Views\Blog\Explore.cshtml.g.cs
+D:\College Documents\Semester 5\WAD\Blog Website\BlogIt\obj\Debug\netcoreapp3.1\Razor\Views\Blog\Explore.cshtml.g.cs

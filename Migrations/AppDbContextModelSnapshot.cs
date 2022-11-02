@@ -145,7 +145,7 @@ namespace BlogIt.Migrations
                     b.HasOne("BlogIt.Models.User", "User")
                         .WithMany("SavedBlogs")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
