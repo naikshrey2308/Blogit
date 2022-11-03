@@ -107,5 +107,8 @@ function finalize() {
     document.getElementById("blog-heading-submit").value = document.getElementById("blog-heading").innerHTML;
     document.getElementById("blog-date-time").value = Date.now();
     document.getElementById("blog-content-submit").value = document.getElementById("blog-content").innerHTML;
+    document.getElementById("category").value = document.getElementById("category-writer").value;
+    console.log(document.getElementById("category").value);
     document.getElementById("form-submitter").click();
+
 }

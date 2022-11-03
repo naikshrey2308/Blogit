@@ -63,14 +63,17 @@ namespace BlogIt.Controllers
             user.Name = HttpContext.Session.GetString("user_name") ?? "";
             user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
             ViewBag.User = user;
+            IEnumerable<Category> categories = _categoryRepo.GetAllCategory();
+            ViewBag.category = categories;
             return View(viewName: "~/Views/Blog/CreateBlog.cshtml");
         }
 
         [HttpPost]
-        public IActionResult Create(Blog blog, string trashImages, IFormFile blogImage) {
+        public IActionResult Create(Blog blog, string trashImages, IFormFile blogImage,int categoryId) {
             blog.Author = _userRepo.GetUser(HttpContext.Session.GetInt32("user_id") ?? -1);
             blog.views = 0;
             blog.Published = false;
+            blog.category = _categoryRepo.GetCategory(categoryId);
             /*blog.DateTime = (string)DateTime.Now;*/
 
             string wwwRootPath = _hostEnvironment.WebRootPath;
@@ -263,6 +266,26 @@ namespace BlogIt.Controllers
                 _savedBlogRepo.Add(saveBlog);
             /*Console.WriteLine("hi");*/
             return Json(blog);
+        }
+
+        [HttpGet]
+        public IActionResult MyBlog()
+        {
+            User user = new User();
+            user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
+            user.Email = HttpContext.Session.GetString("user_email") ?? "";
+            user.Name = HttpContext.Session.GetString("user_name") ?? "";
+            user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
+            ViewBag.User = user;
+
+            var list = _blogRepo.GetAllBlogs();
+            var result = from blog in list
+                         where blog.Author.Id == HttpContext.Session.GetInt32("user_id")
+                         select blog;
+
+            ViewBag.blogs = result;
+            return View(viewName: "~/Views/Blog/Explore.cshtml");
+            
         }
 
         [HttpGet]

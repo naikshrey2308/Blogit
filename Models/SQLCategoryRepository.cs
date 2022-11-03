@@ -19,5 +19,10 @@ namespace BlogIt.Models
         {
             return context.Categories;
         }
+
+        public Category GetCategory(int Id)
+        {
+            return context.Categories.FirstOrDefault(m => m.Id == Id );
+        }
     }
 }
