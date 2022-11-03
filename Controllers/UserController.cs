@@ -83,7 +83,7 @@ namespace BlogIt.Controllers
                 }
                 else
                 {
-                    user.ProfilePicUrl = "~/assets/images/users/default.png";
+                    user.ProfilePicUrl = "/assets/images/users/default.png";
                 }
                  
                 User newUser = _userRepo.Add(user);
@@ -94,7 +94,7 @@ namespace BlogIt.Controllers
                 HttpContext.Session.SetInt32("user_id", newUser.Id);
 
 
-                return Redirect("/User/Dashboard");
+                return Redirect("/Blog/Explore");
             }
             return Redirect("~/Views/User/Register.cshtml");
         }

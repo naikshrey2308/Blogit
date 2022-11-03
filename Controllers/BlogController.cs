@@ -282,18 +282,17 @@ namespace BlogIt.Controllers
         }
 
         [HttpPost]
-        public IActionResult Comment(int blogId,string comment)
+        public IActionResult Comment(int blogId, string comment)
         {
             Comment comment_ = new Comment();
             comment_.blog = _blogRepo.GetBlog(blogId);
-            Console.WriteLine("here"+ blogId);
             comment_.UserId = (int)HttpContext.Session.GetInt32("user_id");
             comment_.BlogId = blogId;
             comment_.dateTime = DateTime.Now;
             comment_.Text = comment;
             comment_.user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
             _commentBlogRepo.Add(comment_);
-         
+
             return Json(null);
         }
     }
