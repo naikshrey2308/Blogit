@@ -99,6 +99,45 @@ namespace BlogIt.Controllers
             return Redirect("~/Views/User/Register.cshtml");
         }
 
+        [HttpGet]
+        public IActionResult updateProfile()
+        {
+            User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+    
+            ViewBag.User = user;
+            return View(viewName: "~/Views/User/UpdateProfile.cshtml");
+        }
+
+        [HttpPost]
+        public IActionResult updateProfile(IFormFile profilePic,int Id,string name,string password)
+        {
+            Console.WriteLine("haa bhai"+profilePic);
+            User user = _userRepo.GetUser(Id);
+
+            if (profilePic != null)
+            {
+                // Save the image to the assets/images/users folder
+                if(user.ProfilePicUrl!= "~/assets/images/users/default.png")
+                    System.IO.File.Delete(user.ProfilePicUrl);
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string filename = user.Email + Path.GetExtension(profilePic.FileName);
+                string path = Path.Combine(wwwRootPath + "/assets/images/users", filename);
+                profilePic.CopyToAsync(new FileStream(path, FileMode.Create));
+                user.ProfilePicUrl = "~/assets/images/users/" + filename;
+            }
+            
+            if(name != null)
+                user.Name = name;
+
+            if(password != null)
+                user.Password = password;
+
+            _userRepo.Update(user);
+
+            ViewBag.User = user;
+
+            return View(viewName: "~/Views/User/UpdateProfile.cshtml");
+        }
      
         public IActionResult Logout() {
             HttpContext.Session.Clear();

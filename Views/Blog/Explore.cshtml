@@ -34,7 +34,7 @@
                     My Blogs
                 </div>
             </div>
-            <div class="text-secondary">
+            <div class="text-secondary" onclick="window.location.href='/user/updateProfile'">
                 <div class="sidebar-action">
                     <i class="material-icons pe-3">&#xe853;</i>
                     Edit Profile
@@ -76,14 +76,14 @@
 
                          <div class="row pt-3" >
                             <div class="col-1">
-                                <img src=@Url.Content(@item.Author.ProfilePicUrl) width="50%" style="aspect-ratio: 1/1;" />
+                                <img src=@Url.Content(@item.Author.ProfilePicUrl) width="50%" style="aspect-ratio: 1/1;border-radius:50%" />
                             </div>
                             <div class="col-3 my-1" style="font-size:30;margin-left:-30px">
                                 @item.Author.Name
                             </div>
                             <div class="col-8 text-end" style="font-size:10">
 
-                               <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@item.Id)">bookmark</i> &nbsp; <i class="material-icons" style="font-size:5;vertical-align:middle">visibility</i>&nbsp; @item.views &nbsp;&nbsp; <i class="material-icons " style="vertical-align:middle;color:red;font-size:5">favorite</i>&nbsp; 100
+                               <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@item.Id)">bookmark</i> &nbsp; <i class="material-icons" style="font-size:5;vertical-align:middle">visibility</i>&nbsp; @item.views &nbsp;&nbsp; <i class="material-icons " style="vertical-align:middle;color:red;font-size:5">favorite</i>&nbsp; @item.likeBlogs.Count
 
                             </div>
                         </div>

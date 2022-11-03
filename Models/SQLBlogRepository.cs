@@ -36,7 +36,7 @@ namespace BlogIt.Models
             /*Console.WriteLine(context.Blogs);
             Console.ReadLine();*/
             // context.Blogs.Include(b => b.Author);
-            return context.Blogs.Include(b => b.Author);
+            return context.Blogs.Include(b => b.Author).Include(b=>b.likeBlogs);
         }
 
         Blog IBlogRepository.GetBlog(int Id)
