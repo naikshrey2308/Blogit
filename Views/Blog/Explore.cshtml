@@ -50,7 +50,7 @@
     <div style="height: 200vh;" class="col-9">
             <div class="blog-image pt-4 mt-5">
                 <form asp-action="FilterClicked" method="get">
-                    <div class="row">
+                    <div class="row gx-0">
                         <div class="col-1"></div>
                         <div class="col-4">
                             <select class="custom-select form-select form-select-md mx-2 my-1" name="category" asp-items="@(new SelectList(categories, "Id", "type"))" onchange="ValueChanged()">
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="col-1">
-                            <button class="btn bg-orange" type="submit">Fliter</button>
+                            <button class="btn bg-orange" type="submit">Filter</button>
                         </div>
                     
                     </div>
