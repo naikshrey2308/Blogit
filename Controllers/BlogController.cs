@@ -173,6 +173,7 @@ namespace BlogIt.Controllers
             }*/
 
             ViewBag.blogs = blogs;
+            ViewBag.IsExplore = true;
             return View(viewName: "~/Views/Blog/Explore.cshtml");
 
         }
@@ -194,6 +195,7 @@ namespace BlogIt.Controllers
                          where blog.UserId == HttpContext.Session.GetInt32("user_id")
                          select blog.Blog;
             ViewBag.blogs = result;
+            ViewBag.IsSavedBlogs = true;
             return View(viewName: "~/Views/Blog/Explore.cshtml");
         }
 
@@ -278,12 +280,16 @@ namespace BlogIt.Controllers
             user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
             ViewBag.User = user;
 
+            IEnumerable<Category> categories = _categoryRepo.GetAllCategory();
+            ViewBag.category = categories;
+
             var list = _blogRepo.GetAllBlogs();
             var result = from blog in list
                          where blog.Author.Id == HttpContext.Session.GetInt32("user_id")
                          select blog;
 
             ViewBag.blogs = result;
+            ViewBag.IsMyBlog = true;
             return View(viewName: "~/Views/Blog/Explore.cshtml");
             
         }

@@ -24,7 +24,7 @@ namespace BlogIt.Models
 
         public IEnumerable<UserBlog>  GetAllSavedBlogs()
         {
-            return context.UserBlogs.Include(b => b.Blog).Include(bc => bc.Blog.Author);
+             return context.UserBlogs.Include(b => b.Blog).ThenInclude(bc => bc.Author).Include(b => b.Blog.likeBlogs).Include(b =>b.Blog.category);
         }
 
         public UserBlog GetUserBlog(int userid,int blogid)

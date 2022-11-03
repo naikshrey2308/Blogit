@@ -21,26 +21,26 @@
                 <p class="fs-5 mt-3">@User.Name</p>
             </div>
             <div class="mt-0 text-secondary">
-                <div onclick="window.location.href='/blog/explore'" class="sidebar-action">
+                <div onclick="window.location.href='/blog/explore'" class="sidebar-action @((ViewBag.IsExplore != null) ? "active-action" : "")">
                     <i class="material-icons pe-3">dashboard</i>
                     Explore
                 </div>
-                <div onclick="window.location.href='/blog/create'" class="sidebar-action active-action">
+                <div onclick="window.location.href='/blog/create'" class="sidebar-action">
                     <i class="material-icons pe-3">&#xe147;</i>
                     Create Blog
                 </div>
-                <div onclick="window.location.href='/blog/savedBlogs'" class="sidebar-action">
+                <div class="sidebar-action @((ViewBag.IsSavedBlogs != null) ? "active-action" : "")" onclick="window.location.href='/blog/savedBlogs'">
                     <i class="material-icons pe-3">&#xe2bf;</i>
                     Saved Blogs
                 </div>
-                <div class="sidebar-action">
+                <div class="sidebar-action @((ViewBag.IsMyBlog != null) ? "active-action" : "")" onclick="window.location.href='/blog/myBlog'">
                     <i class="material-icons pe-3">bookmark</i>
                     My Blogs
                 </div>
             </div>
             <div class="text-secondary">
                 <div class="sidebar-action">
-                    <i class="material-icons pe-3">&#xe853;</i>
+                    <i class="material-icons pe-3" onclick="window.location.href='/user/updateProfile'">&#xe853;</i>
                     Edit Profile
                 </div>
                 <div onclick="window.location.href='/user/logout'" class="sidebar-action">
@@ -70,10 +70,10 @@
             <div class="blog-image">
                 <img id="blog-image" src=@Url.Content(@blog.TitleImageUrl) class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
             </div>
-            <img src="@User.ProfilePicUrl" class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1;" />
+            <img src="@blog.Author.ProfilePicUrl" class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1;" />
 
             <h6 class="text-center text-secondary">
-                Written By @User.Name
+                Written By @blog.Author.Name
             </h6>
 
             <div id="blog-content" class="main-content text-start text-dark pt-5">

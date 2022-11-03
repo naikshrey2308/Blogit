@@ -17,7 +17,7 @@
                 <p class="fs-5 mt-3">@User.Name</p>
             </div>
             <div class="mt-0 text-secondary">
-                <div onclick="window.location.href='/blog/explore'" class="sidebar-action active-action">
+                <div onclick="window.location.href='/blog/explore'" class="sidebar-action @((ViewBag.IsExplore != null) ? "active-action" : "")">
                     <i class="material-icons pe-3">dashboard</i>
                     Explore
                 </div>
@@ -25,16 +25,16 @@
                     <i class="material-icons pe-3">&#xe147;</i>
                     Create Blog
                 </div>
-                <div class="sidebar-action" onclick="window.location.href='/blog/savedBlogs'">
+                <div class="sidebar-action @((ViewBag.IsSavedBlogs != null) ? "active-action" : "")" onclick="window.location.href='/blog/savedBlogs'">
                     <i class="material-icons pe-3">&#xe2bf;</i>
                     Saved Blogs
                 </div>
-                <div class="sidebar-action">
+                <div class="sidebar-action @((ViewBag.IsMyBlog != null) ? "active-action" : "")" onclick="window.location.href='/blog/myBlog'">
                     <i class="material-icons pe-3">bookmark</i>
                     My Blogs
                 </div>
             </div>
-            <div class="text-secondary" onclick="window.location.href='/user/myBlog'">
+            <div class="text-secondary" onclick="window.location.href='/user/updateProfile'">
                 <div class="sidebar-action">
                     <i class="material-icons pe-3">&#xe853;</i>
                     Edit Profile
@@ -83,7 +83,8 @@
                             </div>
                             <div class="col-8 text-end" style="font-size:10">
 
-                               <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@item.Id)">bookmark</i> &nbsp; <i class="material-icons" style="font-size:5;vertical-align:middle">visibility</i>&nbsp; @item.views &nbsp;&nbsp; <i class="material-icons " style="vertical-align:middle;color:red;font-size:5">favorite</i>&nbsp; 100
+                               <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@item.Id)">bookmark</i> &nbsp; <i class="material-icons" style="font-size:5;vertical-align:middle">visibility</i>&nbsp; @item.views &nbsp;&nbsp; <i class="material-icons " style="vertical-align:middle;color:red;font-size:5">favorite</i>&nbsp; @item.likeBlogs.Count
+
 
                             </div>
                         </div>

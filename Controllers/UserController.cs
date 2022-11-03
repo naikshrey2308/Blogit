@@ -26,7 +26,7 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult Login() {
             if (HttpContext.Session.GetString("user_email") != null)
-                return Redirect("/user/dashboard");
+                return Redirect("/blog/explore");
             else
                 return View(viewName: "~/Views/User/Login.cshtml");
         }
@@ -100,6 +100,50 @@ namespace BlogIt.Controllers
         }
 
      
+        [HttpGet]
+        public IActionResult updateProfile()
+        {
+            User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+    
+            ViewBag.User = user;
+            return View(viewName: "~/Views/User/UpdateProfile.cshtml");
+        }
+
+        [HttpPost]
+        public IActionResult updateProfile(IFormFile profilePic,int Id,string name,string password)
+        {
+            Console.WriteLine("haa bhai"+profilePic);
+            User user = _userRepo.GetUser(Id);
+
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+
+            if(profilePic != null)
+            {
+                // Save the image to the assets/images/users folder
+                if(user.ProfilePicUrl!= "/assets/images/users/default.png")
+                    System.IO.File.Delete(user.ProfilePicUrl);
+                string filename = user.Email + Path.GetExtension(profilePic.FileName);
+                string path = Path.Combine(wwwRootPath + "/assets/images/users", filename);
+                profilePic.CopyToAsync(new FileStream(path, FileMode.Crea
+                HttpContext.Session.SetString("user_pic", user.ProfilePicUrl!=null?user.ProfilePicUrl:"shruti2903@gmail.com.png");
+            te));
+                user.ProfilePicUrl = "/assets/images/users/" + filename;
+                HttpContext.Session.SetString("user_pic", user.ProfilePicUrl);
+            }
+            
+            if(name != null)
+                user.Name = name;
+
+            if(password != null)
+                user.Password = password;
+
+            _userRepo.Update(user);
+
+            ViewBag.User = user;
+
+    return View(viewName: "~/Views/User/UpdateProfile.cshtml");
+        }
+        
         public IActionResult Logout() {
             HttpContext.Session.Clear();
             return Redirect("/user/login");

@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+    User User = ViewBag.User;
+}
+
+<link rel="stylesheet" href="~/css/blog.css" />
+@section navbar {
+
+}
+<div class="row font-jost gx-0">
+    <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
+        <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
+            <div class="text-center text-light mx-seperator-90-auto">
+                <img src=@Url.Content(@User.ProfilePicUrl) class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <p class="fs-5 mt-3">@User.Name</p>
+            </div>
+            <div class="mt-0 text-secondary">
+                <div onclick="window.location.href='/blog/explore'" class="sidebar-action">
+                    <i class="material-icons pe-3">dashboard</i>
+                    Explore
+                </div>
+                <div onclick="window.location.href='/blog/create'" class="sidebar-action">
+                    <i class="material-icons pe-3">&#xe147;</i>
+                    Create Blog
+                </div>
+                <div class="sidebar-action" onclick="window.location.href='/blog/savedBlogs'">
+                    <i class="material-icons pe-3">&#xe2bf;</i>
+                    Saved Blogs
+                </div>
+                <div class="sidebar-action">
+                    <i class="material-icons pe-3">bookmark</i>
+                    My Blogs
+                </div>
+            </div>
+            <div class="text-secondary">
+                <div class="sidebar-action active-action">
+                    <i class="material-icons pe-3">&#xe853;</i>
+                    Edit Profile
+                </div>
+                <div onclick="window.location.href='/user/logout'" class="sidebar-action">
+                    <i class="material-icons pe-3">logout</i>
+                    Log Out
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
+    <div class="col-9">
+        <center><img src="@Url.Content(@User.ProfilePicUrl)" style="aspect-ratio: 1/1;border-radius:50%;width:10%;margin-top:130px" /></center>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="Id" value="@User.Id" />
+            <center><input type="file" name="profilePic" class="form-control my-5" style="width:22%" /></center>
+            <div class="row my-5 mx-5">
+                <div class="col-3"></div>
+                <div class="col-1 my-1">
+                    <b>Name : </b>
+                </div>
+                <div class="col-5">
+                    <input type="text" class="form-control" style="vertical-align:middle" name="name" value="@User.Name"/>
+                </div>
+            </div>
+
+            <div class="row mx-5 my-5">
+                <div class="col-3"></div>
+                <div class="col-1 my-1">
+                    <b>Password: </b>
+                </div>
+                <div class="col-5">
+                    <input type="text" style="vertical-align:middle" class="form-control" name="password" value="@User.Password"/>
+                </div>
+            </div>
+
+            <center><button class="btn bg-orange my-3" style="border-radius:5px" type = "submit">Update</button></center>
+        </form>
+    </div>
+</div>
