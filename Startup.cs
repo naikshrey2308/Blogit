@@ -30,8 +30,11 @@ namespace BlogIt
             services.AddScoped<IUserRepository, SQLUserRepository>();
             services.AddScoped<IBlogRepository, SQLBlogRepository>();
             _ = services.AddScoped<SQLCategoryRepository>();
-            /*services.AddScoped<SQLSavedBlogRepository>();*/
+            services.AddScoped<SQLUserBlogRepository>();
+            services.AddScoped<SQLLikeBlogRepository>();
+            services.AddScoped<SQLCommentBlogRepository>();
             services.AddSession();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

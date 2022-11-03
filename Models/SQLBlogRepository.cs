@@ -41,12 +41,13 @@ namespace BlogIt.Models
 
         Blog IBlogRepository.GetBlog(int Id)
         {
-            return context.Blogs.FirstOrDefault(b => b.Id == Id);
+            return context.Blogs.Include(b => b.Author).Include(b => b.Comments).ThenInclude(c => c.user).FirstOrDefault(b => b.Id == Id);
         }
 
         Blog IBlogRepository.Update(Blog blog)
         {
             context.Blogs.Update(blog);
+            context.SaveChanges();
             return blog;
         }
         

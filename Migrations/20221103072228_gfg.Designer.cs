@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogIt.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221102144810_hgg")]
-    partial class hgg
+    [Migration("20221103072228_gfg")]
+    partial class gfg
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,34 @@ namespace BlogIt.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("BlogIt.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("dateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("BlogIt.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -126,6 +154,21 @@ namespace BlogIt.Migrations
                     b.ToTable("UserBlogs");
                 });
 
+            modelBuilder.Entity("BlogIt.Models.likeBlog", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "BlogId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("likeBlog");
+                });
+
             modelBuilder.Entity("BlogIt.Models.Blog", b =>
                 {
                     b.HasOne("BlogIt.Models.User", "Author")
@@ -139,6 +182,21 @@ namespace BlogIt.Migrations
                         .HasForeignKey("CategoryId");
                 });
 
+            modelBuilder.Entity("BlogIt.Models.Comment", b =>
+                {
+                    b.HasOne("BlogIt.Models.Blog", "blog")
+                        .WithMany("Comments")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogIt.Models.User", "user")
+                        .WithMany("comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BlogIt.Models.UserBlog", b =>
                 {
                     b.HasOne("BlogIt.Models.Blog", "Blog")
@@ -150,7 +208,22 @@ namespace BlogIt.Migrations
                     b.HasOne("BlogIt.Models.User", "User")
                         .WithMany("SavedBlogs")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BlogIt.Models.likeBlog", b =>
+                {
+                    b.HasOne("BlogIt.Models.Blog", "blog")
+                        .WithMany("likeBlogs")
+                        .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogIt.Models.User", "user")
+                        .WithMany("LikeBlogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

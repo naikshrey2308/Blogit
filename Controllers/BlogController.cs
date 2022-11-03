@@ -16,14 +16,19 @@ namespace BlogIt.Controllers
         private readonly IBlogRepository _blogRepo;
         private readonly IUserRepository _userRepo;
         private readonly SQLCategoryRepository _categoryRepo;
-       /* private readonly SQLSavedBlogRepository _savedBlogRepo;*/
+        private readonly SQLUserBlogRepository _savedBlogRepo;
+        private readonly SQLLikeBlogRepository _likedBlogRepo;
+        private readonly SQLCommentBlogRepository _commentBlogRepo;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-        public BlogController(IUserRepository userRepo, IBlogRepository blogRepo,SQLCategoryRepository catRepo, IWebHostEnvironment hostEnvironment)
+        public BlogController(IUserRepository userRepo, IBlogRepository blogRepo,SQLCategoryRepository catRepo,SQLUserBlogRepository savedblogrepo, SQLLikeBlogRepository likeblogrepo, SQLCommentBlogRepository commentRepo,IWebHostEnvironment hostEnvironment)
         {
             _blogRepo = blogRepo;
             _userRepo = userRepo;
             _categoryRepo = catRepo;
+            _savedBlogRepo = savedblogrepo;
+            _likedBlogRepo = likeblogrepo;
+            _commentBlogRepo = commentRepo;
             _hostEnvironment = hostEnvironment;
         }
 
@@ -146,6 +151,7 @@ namespace BlogIt.Controllers
 
 
             var blogs = _blogRepo.GetAllBlogs();
+            
            /* var users = _userRepo.GetAllUsers();
             var result = from blog in blogs
                          join author in users
@@ -166,6 +172,26 @@ namespace BlogIt.Controllers
             ViewBag.blogs = blogs;
             return View(viewName: "~/Views/Blog/Explore.cshtml");
 
+        }
+
+        [HttpGet]
+        public IActionResult SavedBlogs()
+        {
+            User user = new User();
+            user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
+            user.Email = HttpContext.Session.GetString("user_email") ?? "";
+            user.Name = HttpContext.Session.GetString("user_name") ?? "";
+            user.ProfilePicUrl = HttpContext.Session.GetString("user_pic") ?? "";
+            ViewBag.User = user;
+
+            IEnumerable<Category> categories = _categoryRepo.GetAllCategory();
+            ViewBag.category = categories;
+            var allBlogs = _savedBlogRepo.GetAllSavedBlogs();
+            var result = from blog in allBlogs
+                         where blog.UserId == HttpContext.Session.GetInt32("user_id")
+                         select blog.Blog;
+            ViewBag.blogs = result;
+            return View(viewName: "~/Views/Blog/Explore.cshtml");
         }
 
         [HttpGet]
@@ -222,13 +248,53 @@ namespace BlogIt.Controllers
             return View(viewName: "~/Views/Blog/Explore.cshtml");
         }
 
-        // [HttpGet]
-        // public IActionResult SaveBlog(string id)
-        // {
-        //     Blog blog = _blogRepo.GetBlog(int.Parse(id));
-        //     User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
-        //     _savedBlogRepo.Add(user, blog);
-        //     return Json(blog);
-        // }
+        [HttpGet]
+        public IActionResult SaveBlog(string id)
+        {
+            Blog blog = _blogRepo.GetBlog(int.Parse(id));
+            User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+            UserBlog saveBlog = new UserBlog();
+            saveBlog.UserId = user.Id;
+            saveBlog.User = user;
+            saveBlog.BlogId = blog.Id;
+            saveBlog.Blog = blog;
+            var exist = _savedBlogRepo.GetUserBlog(user.Id,blog.Id);
+            if(exist == null)
+                _savedBlogRepo.Add(saveBlog);
+            /*Console.WriteLine("hi");*/
+            return Json(blog);
+        }
+
+        [HttpGet]
+        public IActionResult LikedBlogs(int Id)
+        {
+            Blog blog = _blogRepo.GetBlog(Id);
+            Console.WriteLine("in like controller");
+            if (_likedBlogRepo.GetEntry(blog.Id, (int)HttpContext.Session.GetInt32("user_id")) == null){
+                likeBlog blog_ = new likeBlog();
+                blog_.blog = blog;
+                blog_.UserId = (int)HttpContext.Session.GetInt32("user_id");
+                blog_.BlogId = blog.Id;
+                blog_.user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));   
+                _likedBlogRepo.Add(blog_);
+            }
+            return Json(blog);
+        }
+
+        [HttpPost]
+        public IActionResult Comment(int blogId,string comment)
+        {
+            Comment comment_ = new Comment();
+            comment_.blog = _blogRepo.GetBlog(blogId);
+            Console.WriteLine("here"+ blogId);
+            comment_.UserId = (int)HttpContext.Session.GetInt32("user_id");
+            comment_.BlogId = blogId;
+            comment_.dateTime = DateTime.Now;
+            comment_.Text = comment;
+            comment_.user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+            _commentBlogRepo.Add(comment_);
+         
+            return Json(null);
+        }
     }
 }

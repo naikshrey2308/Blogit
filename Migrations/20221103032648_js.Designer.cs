@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogIt.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221102140027_ss")]
-    partial class ss
+    [Migration("20221103032648_js")]
+    partial class js
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,6 +52,9 @@ namespace BlogIt.Migrations
 
                     b.Property<string>("TitleImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("views")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -108,10 +111,40 @@ namespace BlogIt.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BlogIt.Models.UserBlog", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "BlogId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("UserBlogs");
+                });
+
+            modelBuilder.Entity("BlogIt.Models.likeBlog", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "BlogId");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("likeBlog");
+                });
+
             modelBuilder.Entity("BlogIt.Models.Blog", b =>
                 {
                     b.HasOne("BlogIt.Models.User", "Author")
-                        .WithMany("SavedBlogs")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -119,6 +152,36 @@ namespace BlogIt.Migrations
                     b.HasOne("BlogIt.Models.Category", "category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("BlogIt.Models.UserBlog", b =>
+                {
+                    b.HasOne("BlogIt.Models.Blog", "Blog")
+                        .WithMany("SavedBlogs")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogIt.Models.User", "User")
+                        .WithMany("SavedBlogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BlogIt.Models.likeBlog", b =>
+                {
+                    b.HasOne("BlogIt.Models.Blog", "blog")
+                        .WithMany("likeBlogs")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogIt.Models.User", "user")
+                        .WithMany("LikeBlogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

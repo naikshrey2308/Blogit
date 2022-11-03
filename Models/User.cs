@@ -23,5 +23,9 @@ namespace BlogIt.Models
         public String ProfilePicUrl { get; set; }
 
         public ICollection<UserBlog> SavedBlogs { get; set; }
+
+        public ICollection<likeBlog> LikeBlogs { get; set; }
+        public ICollection<Comment> comments { get; set; }
+
     }
 }

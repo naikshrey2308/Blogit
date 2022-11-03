@@ -35,6 +35,7 @@ namespace BlogIt.Models
 
         public ICollection<UserBlog> SavedBlogs { get; set; }
 
-        /*public IList<SavedBlog> SavedBlogs { get; set; }*/
+        public ICollection<likeBlog> likeBlogs { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }

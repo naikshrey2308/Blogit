@@ -29,7 +29,7 @@
                     <i class="material-icons pe-3">&#xe147;</i>
                     Create Blog
                 </div>
-                <div class="sidebar-action">
+                <div onclick="window.location.href='/blog/savedBlogs'" class="sidebar-action">
                     <i class="material-icons pe-3">&#xe2bf;</i>
                     Saved Blogs
                 </div>
@@ -61,8 +61,9 @@
                     </h2>
                 </div>
                 <div class="col-2">
-                    <i class="material-icon" style="font-size:5;" onclick="likeClicked()">favorite</i> &nbsp;
-                    <i class="material-icon" style="font-size:5;" onclick="commentClicked()"></i>
+                    <i class="material-icons" style="font-size:5;vertical-align:middle;fill:none;cursor:pointer;border:2" onclick="likeClicked()">favorite</i> &nbsp;
+                    <i class="material-icons" style="font-size:5;vertical-align:middle;fill:0;cursor:pointer;border:2" onclick="commentClicked()">&#xe0ca</i>
+                    <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@blog.Id)">bookmark</i> 
                 </div>
             </div>
             
@@ -79,6 +80,52 @@
                 
             </div>
         </div>
+
+
+        <div id="commentBlock" class= "shadow end-0 position-fixed" style="background-color:white;z-index:10098;right:0px;overflow-y:scroll;word-wrap:break-word;position:fixed;top:55px;bottom:0;width:25%;display:none">
+           
+            <div class="row">
+                <div class="col-9"></div>
+                <div class="col-1">
+                    <i class="material-icons end-0 my-2 mx-4" style="right:0;cursor:pointer;color:black ;" onclick="closeComment()">close</i>
+                </div>
+            </div>
+            
+            <form style="margin-bottom:30px">@*
+                <input type="hidden" value="@blog.Id" name="blogId"/>*@
+                <div class="row my-2">
+                    <div class="col-9">
+                        <input class="form-control" id="comment" placeholder="Add Comment" required type="text" name="comment" />
+                    </div>
+                    <div class="col-1">
+                        <button class="btn bg-orange " style="border-radius:10px" type="button" onclick="commentAdd()">Post</button>
+                    </div>
+                </div>
+            </form>
+
+
+           @foreach (var item in blog.Comments)
+           {
+               
+               <div class="my-2">
+                  <hr style="width:96%"/>
+                  <div class="row mx-2 my-2">
+                      <div class="col-1">
+                          <img src = "@Url.Content(item.user.ProfilePicUrl)" style="width:25px"/>
+                      </div>
+                      <div class="col-4 my-1 mx-2" style="font-size:15px">
+                          <b>@item.user.Name</b>
+                      </div>
+                      <div class="col-6 text-end my-1" style="color:grey;font-size:13px;">
+                          @item.dateTime
+                      </div>
+                  </div>
+                  <div class="row mx-5">
+                       @item.Text
+                  </div>
+               </div>
+           }          
+        </div>
     </div>
 </div>
 
@@ -89,14 +136,51 @@
     }
     document.getElementById("blog-content").innerHTML = "" + htmlDecode(`@blog.Content`);
 
-    function likeClicked(){
-        const req = await fetch('/blog/likeBlog?id' + @blog.Id, {
+    async function likeClicked(){
+        const req = await fetch('/blog/likedBlogs?id=' + @blog.Id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
         });
+    }
+
+    async function SaveBlog(id) {
+        const req = await fetch("/blog/SaveBlog?id="+id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        
+        });
+        const res = await req.json();
+        console.log(res);
+    }
+    function commentClicked(){
+        console.log("comment clicked");
+        document.getElementById('commentBlock').style.display = "block";
+    }
+
+    function closeComment() {
+         document.getElementById('commentBlock').style.display = "none";
+    }
+
+    async function commentAdd(){
+        var comment = document.getElementById('comment').value;
+        const req = await fetch('/blog/comment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: {
+                blogId: @blog.Id,
+                comment: comment
+            }
+        });
+
     }
 </script>
 

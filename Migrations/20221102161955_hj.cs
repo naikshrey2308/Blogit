@@ -2,7 +2,7 @@
 
 namespace BlogIt.Migrations
 {
-    public partial class ss : Migration
+    public partial class hj : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,7 +47,8 @@ namespace BlogIt.Migrations
                     DateTime = table.Column<string>(nullable: false),
                     Content = table.Column<string>(nullable: false),
                     Published = table.Column<bool>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: true),
+                    views = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,6 +67,29 @@ namespace BlogIt.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserBlogs",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    BlogId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserBlogs", x => new { x.UserId, x.BlogId });
+                    table.ForeignKey(
+                        name: "FK_UserBlogs_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserBlogs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_AuthorId",
                 table: "Blogs",
@@ -77,6 +101,11 @@ namespace BlogIt.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserBlogs_BlogId",
+                table: "UserBlogs",
+                column: "BlogId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -85,6 +114,9 @@ namespace BlogIt.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "UserBlogs");
+
             migrationBuilder.DropTable(
                 name: "Blogs");
 
