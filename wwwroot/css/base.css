@@ -158,3 +158,9 @@
     margin: 0px auto;
     transform: translateX(-5%);
 }
+
+.material-icons-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}

@@ -56,7 +56,11 @@ namespace BlogIt.Controllers
         }
 
         [HttpGet]
+        /*[Authorize]*/
         public IActionResult Create() {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             User user = new User();
             user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
             user.Email = HttpContext.Session.GetString("user_email") ?? "";
@@ -70,6 +74,9 @@ namespace BlogIt.Controllers
 
         [HttpPost]
         public IActionResult Create(Blog blog, string trashImages, IFormFile blogImage,int categoryId) {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return View(viewName: "~/Views/User/Login.cshtml");
+            }
             blog.Author = _userRepo.GetUser(HttpContext.Session.GetInt32("user_id") ?? -1);
             blog.views = 0;
             blog.Published = false;
@@ -118,6 +125,9 @@ namespace BlogIt.Controllers
 
         [HttpGet]
         public IActionResult ViewBlog(int Id) {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             Blog blog = _blogRepo.GetBlog(Id);
             if (blog != null)
             {
@@ -142,6 +152,9 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult Explore()
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             User user = new User();
             user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
             user.Email = HttpContext.Session.GetString("user_email") ?? "";
@@ -181,6 +194,9 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult SavedBlogs()
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             User user = new User();
             user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
             user.Email = HttpContext.Session.GetString("user_email") ?? "";
@@ -202,6 +218,9 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult FilterClicked(string category,string nameTitle)
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             User user = new User();
             user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
             user.Email = HttpContext.Session.GetString("user_email") ?? "";
@@ -215,26 +234,31 @@ namespace BlogIt.Controllers
 
             var blogs = _blogRepo.GetAllBlogs();
 
-            Regex regex = new Regex(@"^"+nameTitle, RegexOptions.IgnoreCase);
+            // Regex regex = new Regex(@"?"+nameTitle, RegexOptions.IgnoreCase);
 
             /*Console.WriteLine("hello regex{0}", regex.ToString());*/
 
-            int categ = int.Parse(category);
 
             var blogsForTesting = blogs;
 
-            if(categ != 0)
+            if (category != null)
             {
-                blogsForTesting = from blog in blogs
-                                  where blog.category.Id == categ
-                                  select blog;
+                int categ = int.Parse(category);
+                if (categ != 0)
+                {
+                    ViewBag.categoryText = _categoryRepo.GetCategory(categ).type ?? "";
+                    blogsForTesting = from blog in blogs
+                                      where blog.category.Id == categ
+                                      select blog;
+                }
             }
 
             if (nameTitle != null)
             {
 
                 var result = from blog in blogsForTesting
-                             where ((regex.IsMatch(blog.Author.Name)) || regex.IsMatch(blog.Title))
+                            //  where ((regex.IsMatch(blog.Author.Name)) || regex.IsMatch(blog.Title))
+                            where (blog.Author.Name).ToLower().Contains(nameTitle.ToLower()) || (blog.Title).ToLower().Contains(nameTitle.ToLower())
                              select blog;
 
                 foreach (var a in result)
@@ -250,12 +274,18 @@ namespace BlogIt.Controllers
                 ViewBag.blogs = blogsForTesting;
             }
 
+            ViewBag.categorySelected = category ?? "0";
+            ViewBag.searchText = nameTitle ?? "";
+
             return View(viewName: "~/Views/Blog/Explore.cshtml");
         }
 
         [HttpGet]
         public IActionResult SaveBlog(string id)
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             Blog blog = _blogRepo.GetBlog(int.Parse(id));
             User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
             UserBlog saveBlog = new UserBlog();
@@ -271,8 +301,31 @@ namespace BlogIt.Controllers
         }
 
         [HttpGet]
+        public IActionResult UnsaveBlog(string id)
+        {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
+
+            Console.WriteLine(id);
+
+            Blog blog = _blogRepo.GetBlog(int.Parse(id));
+            User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
+            UserBlog saveBlog = new UserBlog();
+            saveBlog.UserId = user.Id;
+            saveBlog.User = user;
+            saveBlog.BlogId = blog.Id;
+            saveBlog.Blog = blog;
+/*            _savedBlogRepo.DeleteBlog(saveBlog);
+*/            return Json(null);
+        }
+
+        [HttpGet]
         public IActionResult MyBlog()
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             User user = new User();
             user.Id = HttpContext.Session.GetInt32("user_id") ?? -1;
             user.Email = HttpContext.Session.GetString("user_email") ?? "";
@@ -297,6 +350,9 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult LikedBlogs(int Id)
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             Blog blog = _blogRepo.GetBlog(Id);
             Console.WriteLine("in like controller");
             if (_likedBlogRepo.GetEntry(blog.Id, (int)HttpContext.Session.GetInt32("user_id")) == null){
@@ -313,6 +369,9 @@ namespace BlogIt.Controllers
         [HttpPost]
         public IActionResult Comment(int blogId, string comment)
         {
+            if(HttpContext.Session.GetInt32("user_id")==null){
+                return Redirect("/user/login");
+            }
             Comment comment_ = new Comment();
             comment_.blog = _blogRepo.GetBlog(blogId);
             comment_.UserId = (int)HttpContext.Session.GetInt32("user_id");

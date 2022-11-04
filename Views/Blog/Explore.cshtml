@@ -13,7 +13,7 @@
     <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
         <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
             <div class="text-center text-light mx-seperator-90-auto">
-                <img src=@Url.Content(@User.ProfilePicUrl) class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <img src=@Url.Content(@User.ProfilePicUrl) class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1; object-fit: cover;" />
                 <p class="fs-5 mt-3">@User.Name</p>
             </div>
             <div class="mt-0 text-secondary">
@@ -34,8 +34,8 @@
                     My Blogs
                 </div>
             </div>
-            <div class="text-secondary" onclick="window.location.href='/user/updateProfile'">
-                <div class="sidebar-action">
+            <div class="text-secondary">
+                <div class="sidebar-action" onclick="window.location.href='/user/updateProfile'">
                     <i class="material-icons pe-3">&#xe853;</i>
                     Edit Profile
                 </div>
@@ -53,13 +53,29 @@
                     <div class="row gx-0">
                         <div class="col-1"></div>
                         <div class="col-4">
-                            <select id="category-writer" class="custom-select form-select form-select-md mx-2 my-1" name="category" asp-items="@(new SelectList(categories, "Id", "type"))">
-                              <option value=0 selected>All</option>                          
+                            <select id="category-writer" class="custom-select form-select form-select-md mx-2 my-1" name="category" @*asp-items="@(new SelectList(categories, "Id", "type"))"*@>
+                                @if (ViewBag.categorySelected == "0") {
+                                <option value="0" selected>All</option>
+                                }
+                                else {
+                                <option value="0">All</option>
+                                }
+
+                                @foreach(var item in categories) {
+                                    if (ViewBag.categoryText != null && item.type == ViewBag.categoryText)
+                                    {
+                                        <option value="@item.Id" selected>@(item.type)</option>                          
+                                    }
+                                    else
+                                    {
+                                    <option value="@item.Id">@(item.type)</option>           
+                                    }
+                                }
                             </select>
                         </div>
                  
                         <div class="col-5 ">
-                            <input class="form-control me-2" type="search" name="nameTitle" placeholder="Search By Author and Title" aria-label="Search">
+                            <input class="form-control me-2" type="search" name="nameTitle" value="@ViewBag.searchText" placeholder="Search By Author and Title" aria-label="Search">
                         </div>
 
                         <div class="col-1">
@@ -76,17 +92,38 @@
 
                          <div class="row pt-3" >
                             <div class="col-1">
-                                <img src=@Url.Content(@item.Author.ProfilePicUrl) width="50%" style="aspect-ratio: 1/1;" />
+                                <img src=@Url.Content(@item.Author.ProfilePicUrl) width="50%" style="aspect-ratio: 1/1; object-fit: cover; border-radius: 50%;" />
                             </div>
                             <div class="col-3 my-1" style="font-size:30;margin-left:-30px">
                                 @item.Author.Name
                             </div>
                             <div class="col-8 text-end" style="font-size:10">
 
-                               <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@item.Id)">bookmark</i> &nbsp; <i class="material-icons" style="font-size:5;vertical-align:middle">visibility</i>&nbsp; @item.views &nbsp;&nbsp; <i class="material-icons " style="vertical-align:middle;color:red;font-size:5">favorite</i>&nbsp; @item.likeBlogs.Count
+                                @if (ViewBag.IsSavedBlogs == null)
+                                {
+                                    @if (item.SavedBlogs.Where(e => e.UserId == User.Id).Count() != 0)
+                                    {
+                                        <i class="material-icons me-3" style="font-size:5;vertical-align:middle;color:var(--secondary);cursor:pointer" onclick="UnsaveBlog(this, @item.Id)">bookmark</i>
+                                    }
+                                    else
+                                    {
+                                        <i class="material-icons me-3" style="font-size:5;vertical-align:middle;color:lightgrey;cursor:pointer" onclick="SaveBlog(this, @item.Id)">bookmark</i>
+                                    }
+                                }
+
+                                &nbsp; <i class="material-icons" style="color:grey; font-size:5;vertical-align:middle">visibility</i>&nbsp; @item.views &nbsp; &nbsp;
+
+                                @if (item.likeBlogs.Where(e => e.UserId == User.Id).Count() != 0)
+                                {
+                                    <i class="material-icons " style="vertical-align:middle;color:var(--secondary);font-size:5">favorite</i> @item.likeBlogs.Count
+                                }
+                                else
+                                {
+                                    <i class="material-icons-outlined" style="vertical-align:middle;color:lightgrey;font-size:5">favorite</i> @item.likeBlogs.Count
+                                }
 
 
-                            </div>
+                                </div>
                         </div>
                          <a href="/blog/viewBlog?Id=@item.Id" style="text-decoration:none;color:black">
                          <div class="row">
@@ -95,7 +132,7 @@
                                    <span class="my-1" style="font-size:30px;font-weight:700px">@item.Title</span>
 
                                    <div class="text-start my-2" style="color:grey; width: fit-content;">
-                                        <div> @item.DateTime </div>
+                                        <div> @((new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(item.DateTime))) </div>
                                    </div>
                                    <div style="width: fit-content; background-color:lightgrey;color:black;border-radius:20px;font-size:10px" class="text-center py-1 px-3 mt-3">@item.category.type</div>
                                   
@@ -111,24 +148,31 @@
 
                    
                }
-                
+            
             </div>
     </div>
 </div>
 
 <script>
 
-async function SaveBlog(id) {
-    const req = await fetch("/blog/SaveBlog?id="+id, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-        
-    });
-    const res = await req.json();
-    console.log(res);
-}
+    async function UnsaveBlog(ele, id) {
+        ele.style.color = 'lightgrey';
+        const req = await fetch("/blog/UnsaveBlog?id=" + id, {
+            method: 'GET',
+        });
+    }
+
+    async function SaveBlog(ele, id) {
+        ele.style.color = '#ff914d';
+        const req = await fetch("/blog/SaveBlog?id="+id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        const res = await req.json();
+        console.log(res);
+    }
 
 </script>

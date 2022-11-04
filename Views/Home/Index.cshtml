@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+    IEnumerable<Category> categories = ViewBag.category;
+    int i = 0;
 }
 
 <link rel="stylesheet" href="~/css/home.css" />
@@ -19,16 +21,10 @@
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item me-5">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Blogs</a>
+                        <a class="nav-link" asp-area="" asp-controller="Blog" asp-action="Explore">Blogs</a>
                     </li>
                     <li class="nav-item me-5">
                         <a class="nav-link" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                    </li>
-                    <li class="nav-item me-5">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">About</a>
-                    </li>
-                    <li class="nav-item me-5">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Team</a>
                     </li>
                 </ul>
             </div>
@@ -43,10 +39,10 @@
         <div class="mt-3 pt-3 font-jost text-light">
             <h3>Want a read that interests you?</h3>
             <h4 class="text-orange"><code class="text-orange">Blog it.</code></h4>
-            <div class="d-flex p-1 align-items-center">
-                <input type="search" value="nature" class="form-control input-control mt-4" />
-                <i class="material-icons mt-4 mx-0">search</i>
-            </div>
+            <form asp-controller="Blog" asp-action="FilterClicked" method="GET" class="d-flex p-1 align-items-center">
+                <input type="search" name="nameTitle" value="nature" class="form-control d-inline input-control mt-4" />
+                <button class="btn d-inline ms-3" type="submit"><i class="text-light material-icons mt-4 mx-0">search</i></button>
+            </form>
         </div>
     </div>
 </div>
@@ -55,20 +51,34 @@
         <h3 class="text-center">FIND A BLOG RELATED TO ANY TOPIC</h3>
     </div>
     <div class="d-flex category-slider justify-content-evenly">
-        <span>PLANTS</span>
-        <span>FOOD</span>
-        <span>WORLD</span>
-        <span>SOCCER</span>
+        @foreach (var item in categories) {
+            if (i == 4)
+                break;
+            else {
+                i++;
+                <span data-category="@item.Id">@item.type.ToUpper()</span>
+            }
+        }
     </div>
     <div class="d-flex category-slider mt-5 justify-content-evenly">
-        <span>CODING</span>
-        <span>TRAVEL</span>
-        <span>COSMOS</span>
-        <span>ENGINEERING</span>
-        <span>MEDICINES</span>
+        @if (categories.Count() > 4)
+        {
+            i = 0;
+            @foreach (var item in categories)
+            {
+                if (i++ < 4)
+                    continue;
+                else if (i >= 10)
+                    break;
+                else
+                {
+                    <span data-category="@item.Id">@item.type.ToUpper()</span>
+                }
+            }
+        }
     </div>
     <div class="my-5 pt-5 text-center">
-        <button class="btn btn-orange btn-lg br-50 px-4">Find More</button>
+        <button onclick="window.location.href='/blog/explore'" class="btn btn-orange btn-lg br-50 px-4">Find More</button>
     </div>
 </div>
 <div class="bg-seperator-10 create-blog position-relative font-jost py-5">
@@ -80,7 +90,7 @@
         <div class="text-center">
             <h3 class="text-secondary">IT'S ABSOLUTELY FREE!</h3>
         </div>
-        <div class="timeline container d-flex justify-content-evenly mt-5 pt-5">
+        @*<div class="timeline container d-flex justify-content-evenly mt-5 pt-5">
             <div class="bulb bg-light br-50p d-flex align-content-center p-2 d-inline">
                 <i class="material-icons text-black">article</i>
                 <span class="bulb-text text-center">Pick a template</span>
@@ -101,9 +111,9 @@
                 <i class="material-icons text-black">public</i>
                 <span class="bulb-text">Publish</span>
             </div>
-        </div>
+        </div>*@
         <div class="my-5 pt-5 text-center">
-            <button onclick="window.location.href='/user/register'" style="z-index: 2;" class="btn btn-light btn-lg br-50 px-4">Create My First Blog</button>
+            <button onclick="window.location.href='/blog/create'" style="z-index: 2;" class="btn btn-light btn-lg br-50 px-4">Create My First Blog</button>
         </div>
     </div>
 </div>
@@ -117,7 +127,7 @@
             <p class="text-secondary">
                 Have a great knowledge of something that you want others to know about? Why not create a blog! With tons of options to choose from, Blogit gives you an upper hand over creating your blog the way you like.
             </p>
-            <button onclick="window.location.href='/user/register'" class="my-3 btn btn-orange text-white br-50 float-end px-4">Create My Blog</button>
+            <button onclick="window.location.href='/blog/create'" class="my-3 btn btn-orange text-white br-50 float-end px-4">Create My Blog</button>
         </div>
         <div style="min-height: 25vh;" class="shadow px-4 pt-5 pb-3 col-3 br-10 border">
             <i class="material-icons text-orange" style="font-size: 75px;">&#xe2db;</i>
@@ -125,15 +135,15 @@
             <p class="text-secondary">
                 Do you find some topic really interesting? Know what others have to say about the same by just the click of a button. Search for a blog and read it. With variety of catergories and tons of blogs for each category, you'll never get bored.
             </p>
-            <button class="my-3 btn btn-orange text-white br-50 float-end px-4">Search A Blog</button>
+            <button onclick="window.location.href='/blog/explore'" class="my-3 btn btn-orange text-white br-50 float-end px-4">Search A Blog</button>
         </div>
         <div style="min-height: 25vh;" class="shadow px-4 pt-5 pb-3 col-3 br-10 border">
-            <i class="material-icons text-orange" style="font-size: 75px;">&#xe52d;</i>
-            <h3 class="my-3">Save To Drafts</h3>
+            <i class="material-icons text-orange" style="font-size: 75px;">&#xe2bf;</i>
+            <h3 class="my-3">Save To Collections</h3>
             <p class="text-secondary">
-                Creating a blog ain't that easy right. Having to write too much of course, needs a break. But wait! Do I have to start all over it again? Absolutely not! With Blogit, you can save your current blog without publishing it.
+                Imagine reading an engrossing blog that has caught your attention. But its too long? You might, of course, want to read it later. It's easy! Just click on the save to my blogs icon and find it in your collections. Happy reading!
             </p>
-            <button class="my-3 btn btn-orange text-white br-50 float-end px-4">Check This Out</button>
+            <button onclick="window.location.href='/blog/savedBlogs'" class="my-3 btn btn-orange text-white br-50 float-end px-4">Check This Out</button>
         </div>
     </div>
 </div>
@@ -200,4 +210,14 @@
                 navbar.classList.replace("bg-light", "bg-transparent");
             }
         });
+
+    function findBlog(event) {
+        let text = event.target.dataset.category;
+        window.location.href = `/blog/filterClicked?category=${text.toLowerCase()}`;
+    }
+
+    let categorySliders = [...document.getElementsByClassName("category-slider")];
+    categorySliders.forEach(ele => {
+        ele.addEventListener("click", (e) => findBlog(e));
+    });
 </script>

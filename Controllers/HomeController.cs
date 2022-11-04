@@ -1,4 +1,5 @@
 ﻿using BlogIt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,17 +13,24 @@ namespace BlogIt.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SQLCategoryRepository _categoryRepo;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, SQLCategoryRepository categoryRepo)
         {
             _logger = logger;
+            _categoryRepo = categoryRepo;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            IEnumerable<Category> categories = _categoryRepo.GetAllCategory();
+            ViewBag.category = categories;
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();

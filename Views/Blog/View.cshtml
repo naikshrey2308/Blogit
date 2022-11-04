@@ -17,7 +17,7 @@
     <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
         <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
             <div class="text-center text-light mx-seperator-90-auto">
-                <img src="@User.ProfilePicUrl" class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <img src="@User.ProfilePicUrl" class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1; object-fit: cover;" />
                 <p class="fs-5 mt-3">@User.Name</p>
             </div>
             <div class="mt-0 text-secondary">
@@ -54,19 +54,36 @@
 
     <div class="p-5 col-9">
         <div class="blog-image pt-4">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-10">
-                    <h2 class="fw-bold my-5 text-center">
-                        @blog.Title
-                    </h2>
-                </div>
-                <div class="col-2">
-                    <i class="material-icons" style="font-size:5;vertical-align:middle;fill:none;cursor:pointer;border:2" onclick="likeClicked()">favorite</i> &nbsp;
-                    <i class="material-icons" style="font-size:5;vertical-align:middle;fill:0;cursor:pointer;border:2" onclick="commentClicked()">&#xe0ca</i>
-                    <i class="material-icons" style="font-size:5;vertical-align:middle;color:grey;cursor:pointer" onclick="SaveBlog(@blog.Id)">bookmark</i> 
-                </div>
-            </div>
+                    
+                </div> -->
+            <div class="text-end">
+                @if (blog.SavedBlogs.Where(e => e.UserId == User.Id).Count() != 0)
+                {
+                    <i id="save" class="material-icons mx-2" style="font-size:5;vertical-align:middle;color:var(--secondary);cursor:pointer" onclick="SaveBlog(@blog.Id)">bookmark</i>
+                }
+                else
+                {
+                    <i id="save" class="material-icons mx-2" style="font-size:5;vertical-align:middle;color:lightgrey;cursor:pointer" onclick="SaveBlog(@blog.Id)">bookmark</i>
+                }
+
+                @if (blog.likeBlogs.Where(e => e.UserId == User.Id).Count() != 0)
+                {
+                    <i id="like" class="material-icons mx-2" style="vertical-align:middle;color:var(--secondary);font-size:5">favorite</i> @blog.likeBlogs.Count
+                }
+                else
+                {
+                    <i id="like" class="material-icons-outlined mx-2" style="vertical-align:middle;color:lightgrey;font-size:5" onclick="likeClicked()">favorite</i> @blog.likeBlogs.Count
+                }
+
+                <i class="material-icons mx-2" style="color: lightgrey; font-size:5;vertical-align:middle;fill:0;cursor:pointer;border:2" onclick="commentClicked()">&#xe0ca</i>
             
+            </div>
+            <!-- </div> -->
+            <h2 class="fw-bold my-5 text-center">
+                        @blog.Title
+            </h2>
             <div class="blog-image">
                 <img id="blog-image" src=@Url.Content(@blog.TitleImageUrl) class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
             </div>
@@ -99,7 +116,7 @@
                     <input class="form-control" id="comment" placeholder="Add Comment" required type="text" name="comment" />
                 </div>
                 <div class="col-2">
-                    <button class="btn bg-orange br-50p px-4" style="border-radius:10px" type="button" onclick="commentAdd()">Post</button>
+                    <button class="btn bg-orange br-50 px-4" type="button" onclick="commentAdd()">Post</button>
                 </div>
             </div>
         </form>
@@ -114,7 +131,7 @@
                 <div class="my-2">
                     <div class="row gx-0 mx-2 my-2">
                         <div class="col-1">
-                            <img src="@Url.Content(item.user.ProfilePicUrl)" style="width:25px" />
+                            <img src="@Url.Content(item.user.ProfilePicUrl)" class="br-50p" style="width:25px; height 25px; object-fit: cover; background-color: black;" />
                         </div>
                         <div class="col-4 my-1 mx-2" style="font-size:15px">
                             <b>@item.user.Name</b>
@@ -142,6 +159,9 @@
     document.getElementById("blog-content").innerHTML = "" + htmlDecode(`@blog.Content`);
 
     async function likeClicked(){
+
+        document.getElementById('like').text = 'material-icons';
+        document.getElementById('like').style.color = '#ff914d';
         const req = await fetch('/blog/likedBlogs?id=' + @blog.Id, {
             method: 'GET',
             headers: {
@@ -152,6 +172,7 @@
     }
 
     async function SaveBlog(id) {
+        document.getElementById('save').style.color = '#ff914d';
         const req = await fetch("/blog/SaveBlog?id="+id, {
             method: 'GET',
             headers: {

@@ -19,7 +19,7 @@
     <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
         <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
             <div class="text-center text-light mx-seperator-90-auto">
-                <img src="@User.ProfilePicUrl" class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <img src="@User.ProfilePicUrl" class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1; object-fit: cover;" />
                 <p class="fs-5 mt-3">@User.Name</p>
             </div>
             <div class="mt-0 text-secondary">
@@ -40,8 +40,8 @@
                     My Blogs
                 </div>
             </div>
-            <div class="text-secondary" onclick="window.location.href='/user/updateProfile'">
-                <div class="sidebar-action">
+            <div class="text-secondary">
+                <div class="sidebar-action" onclick="window.location.href='/user/updateProfile'">
                     <i class="material-icons pe-3">&#xe853;</i>
                     Edit Profile
                 </div>
@@ -57,19 +57,19 @@
     <div class="p-5 col-9">
         <div class="text-end pt-4">
             <select id="category-writer" class="custom-select form-select form-select-md mx-2 my-1" name="category" asp-items="@(new SelectList(categories, "Id", "type"))" onchange="ValueChanged()">
-                <option value=0 selected>All</option>
+
             </select>
         </div>
         <div class="blog-image pt-4">
             <h2 class="fw-bold my-5 text-center">
                 &nbsp;
                 <span id="blog-heading" contenteditable="true" class="blog-heading">
-                    Blog Heading Here...
+                    Our Beautiful Planet - Earth
 
                 </span>
             </h2>
             <div class="blog-image">
-                <img id="blog-image" src="~/images/create-blog-bg.jpg" class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
+                <img id="blog-image" src="~/images/create-blog-bg.jpg" class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2; object-fit: contain; background-color: transparent;" />
                 <button onclick="setBlogImage()" class="text-light d-flex align-items-center blog-image-upload">
                     <span style="font-size: 18px;">Upload Blog Image</span>
                     <i class="material-icons ps-2">upload</i>
@@ -99,7 +99,7 @@
             </h6>
 
             <div id="blog-content" contenteditable="true" class="main-content text-start text-dark pt-5">
-                Type '/' for inserting blocks...
+                Type here...
             </div>
 
             <div id="block-insert-select" contenteditable="false" class="d-none position-absolute py-1 br-10 d-inline-block text-light px-2 bg-dark">

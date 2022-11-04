@@ -36,12 +36,12 @@ namespace BlogIt.Models
             /*Console.WriteLine(context.Blogs);
             Console.ReadLine();*/
             // context.Blogs.Include(b => b.Author);
-            return context.Blogs.Include(b => b.Author).Include(b => b.category).Include(b => b.likeBlogs);
+            return context.Blogs.Include(b => b.Author).Include(b => b.category).Include(b => b.likeBlogs).Include(b => b.SavedBlogs);
         }
 
         Blog IBlogRepository.GetBlog(int Id)
         {
-            return context.Blogs.Include(b => b.Author).Include(b => b.likeBlogs).Include(b => b.category).Include(b => b.Comments).ThenInclude(c => c.user).FirstOrDefault(b => b.Id == Id);
+            return context.Blogs.Include(b => b.Author).Include(b => b.likeBlogs).Include(b => b.SavedBlogs).Include(b => b.category).Include(b => b.Comments).ThenInclude(c => c.user).FirstOrDefault(b => b.Id == Id);
         }
 
         Blog IBlogRepository.Update(Blog blog)
@@ -50,6 +50,7 @@ namespace BlogIt.Models
             context.SaveChanges();
             return blog;
         }
+
         
     }
 }

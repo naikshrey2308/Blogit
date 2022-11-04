@@ -56,7 +56,7 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult Register() {
             if (HttpContext.Session.GetString("user_email") != null)
-                return Redirect("/user/dashboard");
+                return Redirect("/blog/explore");
             else
                 return View(viewName: "~/Views/User/Register.cshtml");
         }
@@ -103,6 +103,9 @@ namespace BlogIt.Controllers
         [HttpGet]
         public IActionResult updateProfile()
         {
+            if(HttpContext.Session.GetInt32("user_id") == null){
+                return Redirect("/user/login");
+            }
             User user = _userRepo.GetUser((int)HttpContext.Session.GetInt32("user_id"));
     
             ViewBag.User = user;
@@ -112,6 +115,9 @@ namespace BlogIt.Controllers
         [HttpPost]
         public IActionResult updateProfile(IFormFile profilePic,int Id,string name,string password)
         {
+            if(HttpContext.Session.GetInt32("user_id")==null == null){
+                return Redirect("/user/login");
+            }
             Console.WriteLine("haa bhai"+profilePic);
             User user = _userRepo.GetUser(Id);
 
@@ -120,13 +126,17 @@ namespace BlogIt.Controllers
             if(profilePic != null)
             {
                 // Save the image to the assets/images/users folder
-                if(user.ProfilePicUrl!= "/assets/images/users/default.png")
-                    System.IO.File.Delete(user.ProfilePicUrl);
+                if (user.ProfilePicUrl != "/assets/images/users/default.png")
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(wwwRootPath + user.ProfilePicUrl);
+                }
                 string filename = user.Email + Path.GetExtension(profilePic.FileName);
                 string path = Path.Combine(wwwRootPath + "/assets/images/users", filename);
-                profilePic.CopyToAsync(new FileStream(path, FileMode.Crea
+                profilePic.CopyToAsync(new FileStream(path, FileMode.Create));
                 HttpContext.Session.SetString("user_pic", user.ProfilePicUrl!=null?user.ProfilePicUrl:"shruti2903@gmail.com.png");
-            te));
+            
                 user.ProfilePicUrl = "/assets/images/users/" + filename;
                 HttpContext.Session.SetString("user_pic", user.ProfilePicUrl);
             }
@@ -141,7 +151,7 @@ namespace BlogIt.Controllers
 
             ViewBag.User = user;
 
-    return View(viewName: "~/Views/User/UpdateProfile.cshtml");
+            return View(viewName: "~/Views/User/UpdateProfile.cshtml");
         }
         
         public IActionResult Logout() {

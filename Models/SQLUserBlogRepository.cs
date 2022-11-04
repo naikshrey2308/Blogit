@@ -32,6 +32,12 @@ namespace BlogIt.Models
             return context.UserBlogs.FirstOrDefault(m => m.UserId == userid && m.BlogId==blogid);
         }
 
+/*        public UserBlog DeleteBlog(UserBlog blog)
+        {
+            context.UserBlogs.Remove(blog);
+            context.SaveChanges();
+            return blog;
+        }*/
 
     }
 }

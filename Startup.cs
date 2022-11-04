@@ -1,7 +1,9 @@
 using BlogIt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +36,14 @@ namespace BlogIt
             services.AddScoped<SQLLikeBlogRepository>();
             services.AddScoped<SQLCommentBlogRepository>();
             services.AddSession();
+
+            /*services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                            .RequireAuthenticatedUser()
+                            .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });*/
 
         }
 
