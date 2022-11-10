@@ -73,6 +73,7 @@ namespace BlogIt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Blog blog, string trashImages, IFormFile blogImage,int categoryId) {
             if(HttpContext.Session.GetInt32("user_id")==null){
                 return View(viewName: "~/Views/User/Login.cshtml");
@@ -124,6 +125,7 @@ namespace BlogIt.Controllers
         }
 
         [HttpGet]
+        [Route("/blog/view/{Id}")]
         public IActionResult ViewBlog(int Id) {
             if(HttpContext.Session.GetInt32("user_id")==null){
                 return Redirect("/user/login");
@@ -150,6 +152,9 @@ namespace BlogIt.Controllers
         }
 
         [HttpGet]
+        [Route("/blog")]
+        [Route("/blog/explore")]
+        [Route("/user/dashboard")]
         public IActionResult Explore()
         {
             if(HttpContext.Session.GetInt32("user_id")==null){

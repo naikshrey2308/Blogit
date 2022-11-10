@@ -52,13 +52,17 @@
     </div>
     <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
 
-    <div class="p-5 col-9">
+    <div class="py-4 col-9">
         <div class="blog-image pt-4">
             <!-- <div class="row">
-                <div class="col-10">
-                    
-                </div> -->
-            <div class="text-end">
+        <div class="col-10">
+
+        </div> -->
+            <div class="blog-image">
+                <img id="blog-image" src=@Url.Content(@blog.TitleImageUrl) class="mx-auto d-block" style="height: 500px; width: 100%; object-fit: contain; background-color: black;" />
+            </div>
+
+            <div class="text-end mt-3">
                 @if (blog.SavedBlogs.Where(e => e.UserId == User.Id).Count() != 0)
                 {
                     <i id="save" class="material-icons mx-2" style="font-size:5;vertical-align:middle;color:var(--secondary);cursor:pointer" onclick="SaveBlog(@blog.Id)">bookmark</i>
@@ -78,23 +82,21 @@
                 }
 
                 <i class="material-icons mx-2" style="color: lightgrey; font-size:5;vertical-align:middle;fill:0;cursor:pointer;border:2" onclick="commentClicked()">&#xe0ca</i>
-            
+
             </div>
             <!-- </div> -->
             <h2 class="fw-bold my-5 text-center">
-                        @blog.Title
+                @blog.Title
             </h2>
-            <div class="blog-image">
-                <img id="blog-image" src=@Url.Content(@blog.TitleImageUrl) class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2;" />
-            </div>
-            <img src="@blog.Author.ProfilePicUrl" class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1;" />
+
+            <img src="@blog.Author.ProfilePicUrl" class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1; object-fit: cover;" />
 
             <h6 class="text-center text-secondary">
                 Written By @blog.Author.Name
             </h6>
 
-            <div id="blog-content" class="main-content text-start text-dark pt-5">
-                
+            <div id="blog-content" class="main-content text-start text-dark p-5">
+
             </div>
         </div>
 

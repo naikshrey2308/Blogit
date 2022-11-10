@@ -32,6 +32,7 @@ namespace BlogIt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(string email, string password) {
             User user = _userRepo.GetUserFromEmail(email);
             if (user == null)
@@ -62,6 +63,7 @@ namespace BlogIt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(IFormFile profilePic, string cpass, User user)
         {
             if (ModelState.IsValid) {
@@ -94,13 +96,16 @@ namespace BlogIt.Controllers
                 HttpContext.Session.SetInt32("user_id", newUser.Id);
 
 
-                return Redirect("/Blog/Explore");
+                return Redirect("/blog/view/6");
             }
             return Redirect("~/Views/User/Register.cshtml");
         }
 
      
         [HttpGet]
+        /* This is the default route for the User controller. */
+        [Route("/user")]
+        [Route("/user/updateProfile")]
         public IActionResult updateProfile()
         {
             if(HttpContext.Session.GetInt32("user_id") == null){
@@ -113,9 +118,10 @@ namespace BlogIt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult updateProfile(IFormFile profilePic,int Id,string name,string password)
         {
-            if(HttpContext.Session.GetInt32("user_id")==null == null){
+            if(HttpContext.Session.GetInt32("user_id") == null){
                 return Redirect("/user/login");
             }
             Console.WriteLine("haa bhai"+profilePic);

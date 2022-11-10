@@ -8,6 +8,7 @@
 <div class="bg-seperator-left min-vh-100">
     <div style="transform: translate(-75%, -50%); top: 50%;" class="position-absolute w-form top-50 start-75 container">
         <form enctype="multipart/form-data" asp-action="Register" method="POST" class="form p-3 br-10 p-lg-5 container bg-light">
+            @Html.AntiForgeryToken()
             <div style="flex-direction: row; cursor: pointer;" class="mb-3 d-flex align-items-center text-secondary">
                 <div class="d-flex" onclick="window.location.href='/User/Login'">
                     <i class="material-icons mx-3">&#xe5c4;</i>

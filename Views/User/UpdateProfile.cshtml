@@ -11,7 +11,7 @@
     <div style="z-index: 1; height: 100vh;" class="bg-seperator-90 d-none d-sm-block position-sticky top-0 start-0 col-3">
         <div class="d-flex pt-5 flex-column justify-content-evenly h-100">
             <div class="text-center text-light mx-seperator-90-auto">
-                <img src=@Url.Content(@User.ProfilePicUrl) class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1;" />
+                <img src=@Url.Content(@User.ProfilePicUrl) class="br-50p mx-auto d-block" width="50%" style="aspect-ratio: 1/1; object-fit: cover;" />
                 <p class="fs-5 mt-3">@User.Name</p>
             </div>
             <div class="mt-0 text-secondary">
@@ -46,8 +46,9 @@
     </div>
     <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
     <div class="col-9">
-        <center><img src="@Url.Content(@User.ProfilePicUrl)" style="aspect-ratio: 1/1;border-radius:50%;width:10%;margin-top:130px" /></center>
+        <center><img src="@Url.Content(@User.ProfilePicUrl)" style="aspect-ratio: 1/1; object-fit: cover;border-radius:50%;width:10%;margin-top:130px" /></center>
         <form method="POST" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
             <input type="hidden" name="Id" value="@User.Id" />
             <center><input type="file" name="profilePic" class="form-control my-5" style="width:22%" /></center>
             <div class="row my-5 mx-5">

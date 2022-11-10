@@ -6,6 +6,7 @@
 <div class="bg-seperator-right min-vh-100">
         <div style="transform: translate(-25%, -50%); top: 50%;" class="position-absolute w-form top-50 start-25 container">
             <form method="POST" class="form p-3 br-10 p-lg-5 container bg-light">
+                @Html.AntiForgeryToken()
                 <div style="flex-direction: row-reverse; cursor: pointer;" class="mb-3 d-flex align-items-center text-secondary" onclick="window.location.href='/User/Register'">
                     <i class="material-icons mx-3">&#xe5c8;</i>
                     REGISTER

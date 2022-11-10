@@ -47,7 +47,7 @@
         </div>
     </div>
     <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
-    <div style="height: 200vh;" class="col-9">
+    <div class="col-9">
             <div class="blog-image pt-4 mt-5">
                 <form asp-action="FilterClicked" method="get">
                     <div class="row gx-0">
@@ -125,7 +125,7 @@
 
                                 </div>
                         </div>
-                         <a href="/blog/viewBlog?Id=@item.Id" style="text-decoration:none;color:black">
+                         <a href="/blog/view/@item.Id" style="text-decoration:none;color:black">
                          <div class="row">
                               <div class="col-7">
 
@@ -140,7 +140,7 @@
                               </div>
 
                               <div class="col-5">
-                                   <img src=@Url.Content(@item.TitleImageUrl) style="width:96%;height:70%;border-radius:4px"/>
+                                   <img src=@Url.Content(@item.TitleImageUrl) style="width:96%;height:150px;object-fit:contain;border-radius:4px"/>
                                </div>
                          </div>
                          </a>

@@ -54,12 +54,20 @@
     </div>
     <div style="z-index: 1;" class="bg-orange d-sm-none col-12 border-orange border"></div>
     
-    <div class="p-5 col-9">
-        <div class="text-end pt-4">
+    <div class="py-5 col-9">
+        <div class="text-end p-4">
             <select id="category-writer" class="custom-select form-select form-select-md mx-2 my-1" name="category" asp-items="@(new SelectList(categories, "Id", "type"))" onchange="ValueChanged()">
-
             </select>
         </div>
+
+        <div class="blog-image py-1">
+            <img id="blog-image" src="~/images/create-blog-bg.jpg" class="mx-auto d-block" style="height: 500px; width: 100%; object-fit: contain; background-color: black;" />
+            <button onclick="setBlogImage()" class="text-light d-flex align-items-center blog-image-upload">
+                <span style="font-size: 18px;">Upload Blog Image</span>
+                <i class="material-icons ps-2">upload</i>
+            </button>
+        </div>
+
         <div class="blog-image pt-4">
             <h2 class="fw-bold my-5 text-center">
                 &nbsp;
@@ -68,13 +76,7 @@
 
                 </span>
             </h2>
-            <div class="blog-image">
-                <img id="blog-image" src="~/images/create-blog-bg.jpg" class="br-10 mx-auto d-block" width="1000" style="aspect-ratio: 5/2; object-fit: contain; background-color: transparent;" />
-                <button onclick="setBlogImage()" class="text-light d-flex align-items-center blog-image-upload">
-                    <span style="font-size: 18px;">Upload Blog Image</span>
-                    <i class="material-icons ps-2">upload</i>
-                </button>
-            </div>
+
             <img src="@User.ProfilePicUrl" class="br-50p mx-auto my-4 border-orange border d-block" width="50" style="aspect-ratio: 1/1;" />
 
             <div class="modal fade" id="image-selector-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -98,7 +100,7 @@
                 Written By @User.Name
             </h6>
 
-            <div id="blog-content" contenteditable="true" class="main-content text-start text-dark pt-5">
+            <div id="blog-content" contenteditable="true" class="main-content text-start text-dark p-5">
                 Type here...
             </div>
 
@@ -169,6 +171,7 @@
     </div>
 
     <form id="form" class="position-absolute visually-hidden" asp-action="Create" method="POST" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
         <input type="number" asp-for="Author" value="@User.Id" />
         <input type="text" asp-for="Title" id="blog-heading-submit" />
         <input type="file" id="blog-image-top" name="blogImage" />
